@@ -1,6 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+	Modal,
+	StyleSheet,
+	Text,
+	TextInput,
+	View
+} from 'react-native';
 import { PRAYERS } from './data/PRAYERS';
+//import { FAB } from 'react-native-elements';
+//import { Modal, Dialog } from 'react-native';
+import { FAB, Dialog } from '@rneui/themed';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import PBO from './dialogs/PrayerButtonOverlay';
 
 export default function App() {
 
@@ -15,6 +27,7 @@ export default function App() {
 				{PRAYERS.niceneCreed.text.en}
 			</Text>
 			<StatusBar style="auto" />
+			<PBO />
 		</View>
 	);
 }
