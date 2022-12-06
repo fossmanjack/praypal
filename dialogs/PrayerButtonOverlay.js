@@ -20,6 +20,11 @@ export default function PrayerButtonOverlay() {
 				visible='true'
 				size='large'
 				visible={true}
+				icon={{
+					name: 'playlist-add',
+					type: 'material',
+					color: 'white'
+				}}
 				onPress={_ => showPrayerModal(true)}
 			/>
 
