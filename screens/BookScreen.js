@@ -12,7 +12,7 @@ export default function BookScreen() {
 			}}>
 				{PRAYERS.niceneCreed.name.en}
 			</Text>
-			<Text>
+			<Text style={styles.textDisplay}>
 				{PRAYERS.niceneCreed.text.en}
 			</Text>
 			<StatusBar style="auto" />
@@ -28,4 +28,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
+	textDisplay: {
+		marginHorizontal: 6,
+	}
 });

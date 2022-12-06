@@ -1,13 +1,23 @@
 import { Dialog, FAB } from '@rneui/themed';
 import { useState } from 'react';
 import { TextInput } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import * as Prayer from '../slices/prayerSlice';
 
 export default function PrayerButtonOverlay() {
 	const [ prayerModal, showPrayerModal ] = useState(false);
 	const [ prayerText, setPrayerText ] = useState('');
+	const dispatch = useDispatch();
 
 	const handleSubmitPrayer = _ => {
 		console.log(prayerText);
+		dispatch(Prayer.addPrayer({
+			id: Date.now().toString(16),
+			title: 'Prayer',
+			text: prayerText,
+			expiry: 0,
+		}));
+
 		setPrayerText('');
 		showPrayerModal(false);
 	}
