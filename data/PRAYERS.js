@@ -29,6 +29,37 @@ export const PRAYERS = {
 			`apostolic Church.\n\nI confess one baptism for the forgiveness `+
 			`of sins.\n\nI look for the resurrection of the dead and the life `+
 			`of the age to come.\n\nBiodh se.`,
-		}
+		},
+		tags: [
+			'Daily Prayers',
+			'Symbol'
+		]
+	},
+	jesusPrayer: {
+		name: {
+			en: 'The Jesus Prayer',
+		},
+		text: {
+			en: `Lord Jesus Christ, son of God, have mercy on me, a sinner.`
+		},
+		tags: [
+			'Daily Prayers',
+			'Jesus Prayer',
+		]
+	},
+	lordsPrayer: {
+		name: {
+			en: 'The Lord\'s Prayer',
+		},
+		text: {
+			en: `Our father, who art in Heaven, hallowed be thy name.  Thy kingdom `+
+			`come, thy will be done, on Earth as it is in Heaven.\n\nGive us this day `+
+			`our daily bread, and forgive us our trespasses, as we forgive those who `+
+			`trespass against us.\n\nLead us not into temptation, but deliver us from evil.`,
+		},
+		tags: [
+			'Daily Prayers',
+			'Lord\'s Prayer'
+		]
 	}
 }
