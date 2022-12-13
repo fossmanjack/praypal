@@ -7,10 +7,9 @@ import {
 	useState
 } from 'react';
 import PBO from '../dialogs/PrayerButtonOverlay';
-//import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 export default function ReminderScreen() {
-/*
 	const [ loaded, setLoaded ] = useState(false);
 
 	const onCreateTrigger = async t => {
@@ -40,7 +39,6 @@ export default function ReminderScreen() {
 			loaded = true;
 		}
 	}, []);
-*/
 
 	return (
 		<View style={styles.container}>

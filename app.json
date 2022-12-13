@@ -18,19 +18,21 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.p3soft.tosaigh"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.p3soft.tosaigh"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-    	"@notifee/react-native"
+      "@notifee/react-native"
     ]
   }
 }
