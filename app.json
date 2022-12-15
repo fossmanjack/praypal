@@ -1,38 +1,52 @@
 {
-  "expo": {
-    "name": "caibideil",
-    "slug": "caibideil",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.p3soft.tosaigh"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.p3soft.tosaigh"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "@notifee/react-native"
-    ]
-  }
+	"expo": {
+		"name": "caibideil",
+		"slug": "caibideil",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": [
+			"**/*"
+		],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.p3soft.tosaigh"
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#FFFFFF"
+			},
+			"package": "com.p3soft.tosaigh"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"plugins": [
+			"@notifee/react-native",
+			[
+				"expo-build-properties",
+				{
+					"android": {
+						"compileSdkVersion": 33,
+						"targetSdkVersion": 33
+					}
+				}
+			]
+		],
+		"extra": {
+			"eas": {
+				"projectId": "81077f77-4934-4c97-9b74-7273f9ea3996"
+			}
+		}
+	}
 }
