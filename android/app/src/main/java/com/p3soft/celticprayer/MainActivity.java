@@ -1,4 +1,4 @@
-package com.p3soft.tosaigh;
+package com.p3soft.celticprayer;
 
 import android.os.Build;
 import android.os.Bundle;

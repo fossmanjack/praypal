@@ -1,4 +1,4 @@
-package com.p3soft.tosaigh.newarchitecture;
+package com.p3soft.celticprayer.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.p3soft.tosaigh.BuildConfig;
-import com.p3soft.tosaigh.newarchitecture.components.MainComponentsRegistry;
-import com.p3soft.tosaigh.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.p3soft.celticprayer.BuildConfig;
+import com.p3soft.celticprayer.newarchitecture.components.MainComponentsRegistry;
+import com.p3soft.celticprayer.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

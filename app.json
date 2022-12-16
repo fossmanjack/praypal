@@ -1,10 +1,10 @@
 {
 	"expo": {
-		"name": "caibideil",
-		"slug": "caibideil",
+		"name": "Celtic Prayer",
+		"slug": "celticprayer",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/icon.png",
+		"icon": "./assets/icons/icon2.png",
 		"userInterfaceStyle": "light",
 		"splash": {
 			"image": "./assets/splash.png",
@@ -19,14 +19,15 @@
 		],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.p3soft.tosaigh"
+			"bundleIdentifier": "com.p3soft.celticprayer"
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF"
+				"foregroundImage": "./assets/icons/android-foreground-icon.png",
+				"backgroundImage": "./assets/icons/android-background-icon.png",
+				"backgroundColor": "#223322"
 			},
-			"package": "com.p3soft.tosaigh"
+			"package": "com.p3soft.celticprayer"
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
@@ -45,7 +46,7 @@
 		],
 		"extra": {
 			"eas": {
-				"projectId": "81077f77-4934-4c97-9b74-7273f9ea3996"
+				"projectId": "31415d2c-ada0-454f-9231-b0780ca0d099"
 			}
 		}
 	}

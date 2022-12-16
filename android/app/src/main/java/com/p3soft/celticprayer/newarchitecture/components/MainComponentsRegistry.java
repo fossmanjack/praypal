@@ -1,4 +1,4 @@
-package com.p3soft.tosaigh.newarchitecture.components;
+package com.p3soft.celticprayer.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;
