@@ -3,11 +3,18 @@ import { useState } from 'react';
 import { TextInput } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Prayer from '../slices/prayerSlice';
+import ReminderAddDialog from '../dialogs/ReminderAddDialog';
+import PrayerAddDialog from '../dialogs/PrayerAddDialog';
 
 export default function SpeedDialOverlay() {
+	// overlay visibility
+	const [ speedDialOpen, setSpeedDialOpen ] = useState(false);
+
+	// prayer modal controls
 	const [ prayerModal, showPrayerModal ] = useState(false);
 	const [ prayerText, setPrayerText ] = useState('');
-	const [ speedDialOpen, setSpeedDialOpen ] = useState(false);
+
+	// reminder modal controls
 	const dispatch = useDispatch();
 
 	const handleSubmitPrayer = _ => {

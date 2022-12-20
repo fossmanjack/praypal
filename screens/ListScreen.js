@@ -8,8 +8,6 @@ import {
 import { useSelector } from 'react-redux';
 //import { SwipeListView } from 'react-native-swipe-list-view';
 import { ListItem } from '@rneui/themed';
-import PBO from '../dialogs/PrayerButtonOverlay';
-import SDO from '../dialogs/SpeedDialOverlay';
 
 export default function ListScreen() {
 	const { _Prayers } = useSelector(S => S.prayer);

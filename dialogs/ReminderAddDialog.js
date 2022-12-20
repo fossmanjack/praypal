@@ -97,3 +97,18 @@ export default function ReminderAddDialog(props) {
 		</Dialog>
 	);
 }
+
+/* NOTES
+
+Reminders:
+{
+	id: <uuidv4>
+	name: String
+	text: String
+	hour: integer
+	minute: integer
+	days: { _ReminderDays }
+	active: bool
+}
+
+*/

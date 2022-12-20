@@ -8,8 +8,6 @@ import {
 	useState,
 	useEffect
 } from 'react';
-import PBO from '../dialogs/PrayerButtonOverlay';
-import SDO from '../dialogs/SpeedDialOverlay';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import ReminderAddDialog from '../dialogs/ReminderAddDialog';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -41,7 +39,7 @@ export default function ReminderScreen() {
 		const channelId = await notifee.createChannel({
 			id: 'celticPrayerNotify',
 			name: 'Celtic Prayer Reminders',
-			soundURI: '../assets/notifications/church_bell.mp3',
+			sound: 'church-bell',
 		});
 		console.log('Done.');
 
@@ -120,7 +118,7 @@ export default function ReminderScreen() {
 				/>
 				<Button
 					title="Create Trigger"
-					onPress={onCreateTrigger}
+					onPress={_ => onCreateTrigger(Date.now())}
 				/>
 			</View>
 			<ReminderAddDialog

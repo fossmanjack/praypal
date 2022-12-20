@@ -19,7 +19,7 @@ import BookScreen from './screens/BookScreen';
 import ListScreen from './screens/ListScreen';
 import ReminderScreen from './screens/ReminderScreen';
 import { _Store } from './redux/_Store';
-import SpeedDialOverlay from './dialogs/SpeedDialOverlay';
+import SpeedDialOverlay from './components/SpeedDialOverlay';
 
 const Tab = createBottomTabNavigator();
 
