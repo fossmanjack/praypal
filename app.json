@@ -1,10 +1,10 @@
 {
 	"expo": {
-		"name": "Celtic Prayer",
-		"slug": "celticprayer",
+		"name": "PrayPal",
+		"slug": "praypal",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/icons/icon2.png",
+		"icon": "./assets/icons/prayerpalIcon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
 			"image": "./assets/splash.png",
@@ -19,18 +19,19 @@
 		],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.p3soft.celticprayer"
+			"bundleIdentifier": "com.p3soft.praypal"
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/icons/android-foreground-icon.png",
-				"backgroundImage": "./assets/icons/android-background-icon.png",
-				"backgroundColor": "#223322"
+				"foregroundImage": "./assets/icons/prayerpal-foreground.png",
+				"backgroundImage": "./assets/icons/prayerpal-background.png",
+				"monochromeImage": "./assets/icons/prayerpal-monochrome.png",
+				"backgroundColor": "#00a8ff"
 			},
-			"package": "com.p3soft.celticprayer"
+			"package": "com.p3soft.praypal"
 		},
 		"web": {
-			"favicon": "./assets/favicon.png"
+			"favicon": "./assets/icons/prayerpalIcon.png"
 		},
 		"plugins": [
 			"@notifee/react-native",

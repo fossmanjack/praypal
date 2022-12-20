@@ -19,6 +19,7 @@ import BookScreen from './screens/BookScreen';
 import ListScreen from './screens/ListScreen';
 import ReminderScreen from './screens/ReminderScreen';
 import { _Store } from './redux/_Store';
+import SpeedDialOverlay from './dialogs/SpeedDialOverlay';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +69,7 @@ export default function App() {
 					<Tab.Screen name='Reminders' component={ReminderScreen} />
 				</Tab.Navigator>
 			</NavigationContainer>
+			<SpeedDialOverlay />
 		</Provider>
 	);
 }

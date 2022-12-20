@@ -14,6 +14,7 @@ import {
 } from '@rneui/themed';
 import { PRAYERS } from '../data/PRAYERS';
 import PBO from '../dialogs/PrayerButtonOverlay';
+import SDO from '../dialogs/SpeedDialOverlay';
 
 //function renderMain(data, rowMap) {
 const AccordionListItem = ({ item }) => {
@@ -139,7 +140,6 @@ export default function BookScreen() {
 				renderItem={renderMain}
 				keyGenerator={item => item}
 			/>
-			<PBO />
 		</>
 	);
 

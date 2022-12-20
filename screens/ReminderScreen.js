@@ -9,6 +9,7 @@ import {
 	useEffect
 } from 'react';
 import PBO from '../dialogs/PrayerButtonOverlay';
+import SDO from '../dialogs/SpeedDialOverlay';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import ReminderAddDialog from '../dialogs/ReminderAddDialog';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -21,7 +22,6 @@ export default function ReminderScreen() {
 	const [ newReminderTime, setNewReminderTime ] = useState(new Date(Date.now()));
 	const [ showPicker, setShowPicker ] = useState(false);
 
-/*
 	const onCreateTrigger = async t => {
 		const date = new Date(t);
 		date.setSeconds(date.getSeconds() + 10);
@@ -40,7 +40,8 @@ export default function ReminderScreen() {
 		console.log('Creating channel...');
 		const channelId = await notifee.createChannel({
 			id: 'celticPrayerNotify',
-			name: 'Celtic Prayer Reminders'
+			name: 'Celtic Prayer Reminders',
+			soundURI: '../assets/notifications/church_bell.mp3',
 		});
 		console.log('Done.');
 
@@ -59,10 +60,11 @@ export default function ReminderScreen() {
 			trigger,
 		);
 		console.log('Done.');
+		console.log('Showing all existing triggers...');
 
-		notifee.getTriggerNotificationIds().then(ids => console.log('All trigger notifications and IDs:', ids));
+		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
+		console.log('Done.');
 	}
-*/
 
 	const addReminder = (time, days) => {
 		console.log("New reminder added with", time, days);
@@ -90,6 +92,7 @@ export default function ReminderScreen() {
 		console.log('Toggling showPicker to', !showPicker);
 		setShowPicker(!showPicker);
 	}
+*/
 
 	useEffect(_ => {
 		if(!loaded) {
@@ -98,7 +101,6 @@ export default function ReminderScreen() {
 			setLoaded(true);
 		}
 	}, []);
-*/
 
 	return (
 		<>
@@ -116,7 +118,10 @@ export default function ReminderScreen() {
 					title="Show Picker"
 					onPress={showTimePicker}
 				/>
-				<PBO />
+				<Button
+					title="Create Trigger"
+					onPress={onCreateTrigger}
+				/>
 			</View>
 			<ReminderAddDialog
 				isVisible={addReminderVisible}
