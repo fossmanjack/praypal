@@ -1,134 +1,95 @@
 import {
-	Button,
+	FlatList,
+	SafeAreaView,
 	StyleSheet,
 	Text,
 	View
 } from 'react-native';
-import {
-	useState,
-	useEffect
-} from 'react';
-import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
-import ReminderAddDialog from '../dialogs/ReminderAddDialog';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-//import DateTimePicker from '@react-native-community/datetimepicker';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+//import { SwipeListView } from 'react-native-swipe-list-view';
+import { ListItem, Card, Switch } from '@rneui/themed';
+import * as Rem from '../slices/reminderSlice';
 
-export default function ReminderScreen() {
-	const [ loaded, setLoaded ] = useState(false);
-	const [ addReminderVisible, setAddReminderVisible ] = useState(false);
-	const [ updateReminderVisible, setUpdateReminderVisible ] = useState(false);
-	const [ newReminderTime, setNewReminderTime ] = useState(new Date(Date.now()));
-	const [ showPicker, setShowPicker ] = useState(false);
+export default function ListScreen() {
+	const { _Reminders } = useSelector(S => S.reminder);
+	const dispatch = useDispatch();
+	const [ listData, setListData ] = useState(_Reminders);
 
-	const onCreateTrigger = async t => {
-		const date = new Date(t);
-		date.setSeconds(date.getSeconds() + 10);
+	useEffect(_ => { setListData(_Reminders); console.log('updating:', _Reminders); }, [ _Reminders ]);
 
-		console.log('onCreateTrigger called...');
+	const renderItem = (data, rowMap) => {
+		const { item } = data;
+		const { hour, minute } = item;
+		const displayDate = new Date();
+		displayDate.setHours(hour, minute, 0);
 
-		const trigger: TimestampTrigger = {
-			type: TriggerType.TIMESTAMP,
-			timestamp: date.getTime(),
-		};
+		const activeDaysString = ({ days }) => {
+			let ret = '';
+			ret += item.days['sunday'] ? 'S ' : '';
+			ret += item.days['monday'] ? 'M ' : '';
+			ret += item.days['tuesday'] ? 'T ' : '';
+			ret += item.days['wednesday'] ? 'W ': '';
+			ret += item.days['thursday'] ? 'T ' : '';
+			ret += item.days['friday'] ? 'F ' : '';
+			ret += item.days['saturday'] ? 'S' : '';
 
-		console.log('Awaiting permission...');
-		await notifee.requestPermission();
-		console.log('Done.');
+			return ret;
+		}
 
-		console.log('Creating channel...');
-		const channelId = await notifee.createChannel({
-			id: 'celticPrayerNotify',
-			name: 'Celtic Prayer Reminders',
-			sound: 'church-bell',
-		});
-		console.log('Done.');
-
-		console.log('Creating trigger notification...');
-		await notifee.createTriggerNotification(
-			{
-				title: 'Test notification',
-				body: 'This is a test',
-				android: {
-					channelId,
-					pressAction: {
-						id: 'default',
-					},
-				},
-			},
-			trigger,
-		);
-		console.log('Done.');
-		console.log('Showing all existing triggers...');
-
-		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
-		console.log('Done.');
-	}
-
-	const addReminder = (time, days) => {
-		console.log("New reminder added with", time, days);
-	}
-
-	const onChange = (ev, selectedDate) => {
-		setNewReminderTime(selectedDate)
-	}
-
-
-	const showTimePicker = _ => {
-		setNewReminderTime(new Date(Date.now()));
-		console.log('showTimePicker called with', newReminderTime);
-		DateTimePickerAndroid.open({
-			value: newReminderTime,
-			onChange,
-			mode: 'time',
-			display: 'clock',
-			is24Hour: true
-		});
-	}
+		console.log(`Reminder ${item.name}: ${displayDate.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })}`);
 
 /*
-	const showTimePicker = _ => {
-		console.log('Toggling showPicker to', !showPicker);
-		setShowPicker(!showPicker);
-	}
+		return (
+			<ListItem style={{ flex: 1 }}>
+				<ListItem.Content>
+					<ListItem.Title>
+						{item.name}
+					</ListItem.Title>
+					<ListItem.Subtitle>
+						{displayDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+					</ListItem.Subtitle>
+				</ListItem.Content>
+			</ListItem>
+		);
 */
+		return (
+			<Card>
+				<View style={{ flexDirection: 'row' }}>
+					<Card.Title style={{ flex: 4 }}>
+						{item.name}
+					</Card.Title>
+					<Card.Title style={{ flex: 2 }}>
+						{displayDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+					</Card.Title>
+					<Switch
+						value={item.active}
+						onValueChange={value => handleUpdateReminder({ rid: item.id, data: { active: value }})}
+						style={{ flex: 1 }}
+					/>
+				</View>
+				<View style={{ flexDirection: 'row' }}>
+					<Text>{activeDaysString(item)}</Text>
+				</View>
+			</Card>
+		);
+	}
 
-	useEffect(_ => {
-		if(!loaded) {
-			onCreateTrigger(Date.now());
-			console.log('Creating trigger at', Date.now());
-			setLoaded(true);
-		}
-	}, []);
+	const handleUpdateReminder = ({ rid, data }) => {
+		console.log('handleUpdateReminder', rid, data);
+		dispatch(Rem.modifyReminder([ rid, data ]));
+	}
 
 	return (
 		<>
-			<View style={styles.container}>
-				<Text style={{
-					fontWeight: 'bold'
-				}}>
-					Alarms go here!
-				</Text>
-				<Button
-					title="Add Reminder"
-					onPress={_ => setAddReminderVisible(!addReminderVisible)}
+			<SafeAreaView>
+				<FlatList
+					data={listData}
+					keyExtractor={item => item.id}
+					renderItem={renderItem}
+					bottomDivider
 				/>
-				<Button
-					title="Show Picker"
-					onPress={showTimePicker}
-				/>
-				<Button
-					title="Create Trigger"
-					onPress={_ => onCreateTrigger(Date.now())}
-				/>
-			</View>
-			<ReminderAddDialog
-				isVisible={addReminderVisible}
-				toggleVisible={setAddReminderVisible}
-				addReminder={addReminder}
-				showTimePicker={showTimePicker}
-				newReminderTime={newReminderTime}
-				setNewReminderTime={setNewReminderTime}
-			/>
+			</SafeAreaView>
 		</>
 	);
 }
@@ -144,5 +105,9 @@ const styles = StyleSheet.create({
 
 /*
 
+REMINDER NAME --- REMINDER TIME | Enabled slider
+REMINDER DAYS                   | Edit - Trash
+------------------------------------------------
+Accordion text
 
 */

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Prayer from '../slices/prayerSlice';
 import ReminderAddDialog from '../dialogs/ReminderAddDialog';
 import PrayerAddDialog from '../dialogs/PrayerAddDialog';
+import { _Store } from '../redux/_Store';
 
 export default function SpeedDialOverlay() {
 	// overlay visibility
@@ -74,6 +75,15 @@ export default function SpeedDialOverlay() {
 					}}
 					title='Add reminder'
 					onPress={_ => {}}
+				/>
+				<SpeedDial.Action
+					icon={{
+						name: 'dump-truck',
+						type: 'material-community',
+						color: 'white'
+					}}
+					title='Dump Redux State'
+					onPress={_ => console.log('Dump redux state...\n', _Store.getState())}
 				/>
 			</SpeedDial>
 
