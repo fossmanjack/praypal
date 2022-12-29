@@ -13,7 +13,7 @@ class MainComponentsRegistry
  public:
   // Adapt it to the package you used for your Java class.
   constexpr static auto kJavaDescriptor =
-      "Lcom/p3soft/celticprayer/newarchitecture/components/MainComponentsRegistry;";
+      "Lcom/p3soft/praypal/newarchitecture/components/MainComponentsRegistry;";
 
   static void registerNatives();
 

@@ -93,7 +93,26 @@ export const REMINDERS = [
 		active: false,
 		created: Date.now(),
 		modified: Date.now(),
-	}
+	},
+	{
+		id: 'testRecurring',
+		name: 'Test',
+		text: '',
+		hour: 0,
+		minute: 0,
+		days: {
+			'sunday': true,
+			'monday': true,
+			'tuesday': true,
+			'wednesday': true,
+			'thursday': true,
+			'friday': true,
+			'saturday': true
+		},
+		active: false,
+		created: Date.now(),
+		modified: Date.now(),
+	},
 ]
 
 

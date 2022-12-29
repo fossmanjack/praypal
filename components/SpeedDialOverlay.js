@@ -16,6 +16,8 @@ export default function SpeedDialOverlay() {
 	const [ prayerText, setPrayerText ] = useState('');
 
 	// reminder modal controls
+	const [ reminderDialog, showReminderDialog ] = useState(false);
+
 	const dispatch = useDispatch();
 
 	const handleSubmitPrayer = _ => {
@@ -32,7 +34,6 @@ export default function SpeedDialOverlay() {
 	}
 
 	return (
-
 		<>
 			<SpeedDial
 				isOpen={speedDialOpen}
@@ -74,7 +75,10 @@ export default function SpeedDialOverlay() {
 						color: 'white'
 					}}
 					title='Add reminder'
-					onPress={_ => {}}
+					onPress={_ => {
+						setSpeedDialOpen(!speedDialOpen);
+						showReminderDialog(!reminderDialog);
+					}}
 				/>
 				<SpeedDial.Action
 					icon={{
@@ -86,6 +90,10 @@ export default function SpeedDialOverlay() {
 					onPress={_ => console.log('Dump redux state...\n', _Store.getState())}
 				/>
 			</SpeedDial>
+			<ReminderAddDialog
+				visible={reminderDialog}
+				toggleVisible={showReminderDialog}
+			/>
 
 			<Dialog
 				isVisible={prayerModal}

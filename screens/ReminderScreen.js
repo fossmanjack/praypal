@@ -10,13 +10,14 @@ import { useSelector, useDispatch } from 'react-redux';
 //import { SwipeListView } from 'react-native-swipe-list-view';
 import { ListItem, Card, Switch } from '@rneui/themed';
 import * as Rem from '../slices/reminderSlice';
+import notifee, { TimestampTrigger, TriggerType, RepeatFrequency } from '@notifee/react-native';
 
 export default function ListScreen() {
 	const { _Reminders } = useSelector(S => S.reminder);
 	const dispatch = useDispatch();
-	const [ listData, setListData ] = useState(_Reminders);
+	//const [ listData, setListData ] = useState(_Reminders);
 
-	useEffect(_ => { setListData(_Reminders); console.log('updating:', _Reminders); }, [ _Reminders ]);
+	//useEffect(_ => { setListData(_Reminders); console.log('updating:', _Reminders); }, [ _Reminders ]);
 
 	const renderItem = (data, rowMap) => {
 		const { item } = data;
@@ -38,6 +39,20 @@ export default function ListScreen() {
 		}
 
 		console.log(`Reminder ${item.name}: ${displayDate.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })}`);
+
+// Debug code
+		if (global.__fbBatchedBridge) {
+			const origMessageQueue = global.__fbBatchedBridge;
+			const modules = origMessageQueue._remoteModuleTable;
+			const methods = origMessageQueue._remoteMethodTable;
+			global.findModuleByModuleAndMethodIds = (moduleId, methodId) => {
+				console.log(`The problematic line code is in: ${modules[moduleId]}.${methods[moduleId][methodId]}`)
+			}
+		}
+
+		global.findModuleByModuleAndMethodIds(28, 5);
+		global.findModuleByModuleAndMethodIds(3, 9);
+		global.findModuleByModuleAndMethodIds(21, 0);
 
 /*
 		return (
@@ -78,13 +93,71 @@ export default function ListScreen() {
 	const handleUpdateReminder = ({ rid, data }) => {
 		console.log('handleUpdateReminder', rid, data);
 		dispatch(Rem.modifyReminder([ rid, data ]));
+		if(data.active) {
+			hardcodeRecurringReminder();
+		} else {
+			deleteRecurringReminder();
+		};
+		console.log('Showing all reminders...');
+		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
+		console.log('Done.');
+	}
+
+	const hardcodeRecurringReminder = async _ => {
+		const date = new Date(Date.now());
+		date.setSeconds(date.getSeconds + 10);
+
+		console.log('hardcodeRecurringReminder called...');
+		console.log(RepeatFrequency);
+
+		const trigger: TimestampTrigger = {
+			type: TriggerType.TIMESTAMP,
+			timestamp: date.getTime(),
+		};
+
+		console.log('Awaiting permission...');
+		await notifee.requestPermission();
+		console.log('Done.');
+
+		console.log('Creating channel...');
+		const channelId = await notifee.createChannel({
+			id: 'PrayPalReminder',
+			name: 'PrayPal Reminders',
+			sound: 'church_bell',
+		});
+		console.log('Done.');
+
+		console.log('Creating trigger notification...');
+		await notifee.createTriggerNotification(
+			{
+				id: 'testRecurring',
+				title: 'Recurring Trigger',
+				body: 'This should recur every 30 seconds',
+				android: {
+					channelId,
+					pressAction: {
+						id: 'default',
+					},
+				},
+			},
+			trigger,
+		);
+		console.log('Done.');
+		console.log('Showing all existing triggers...');
+
+		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
+		console.log('Done.');
+	};
+
+	const deleteRecurringReminder = _ => {
+		notifee.cancelNotification('testRecurring');
 	}
 
 	return (
 		<>
 			<SafeAreaView>
 				<FlatList
-					data={listData}
+					data={_Reminders}
 					keyExtractor={item => item.id}
 					renderItem={renderItem}
 					bottomDivider

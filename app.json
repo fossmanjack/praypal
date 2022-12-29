@@ -1,54 +1,54 @@
 {
-	"expo": {
-		"name": "PrayPal",
-		"slug": "praypal",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"icon": "./assets/icons/prayerpalIcon.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
-		"assetBundlePatterns": [
-			"**/*"
-		],
-		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.p3soft.praypal"
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/icons/prayerpal-foreground.png",
-				"backgroundImage": "./assets/icons/prayerpal-background.png",
-				"monochromeImage": "./assets/icons/prayerpal-monochrome.png",
-				"backgroundColor": "#00a8ff"
-			},
-			"package": "com.p3soft.praypal"
-		},
-		"web": {
-			"favicon": "./assets/icons/prayerpalIcon.png"
-		},
-		"plugins": [
-			"@notifee/react-native",
-			[
-				"expo-build-properties",
-				{
-					"android": {
-						"compileSdkVersion": 33,
-						"targetSdkVersion": 33
-					}
-				}
-			]
-		],
-		"extra": {
-			"eas": {
-				"projectId": "31415d2c-ada0-454f-9231-b0780ca0d099"
-			}
-		}
-	}
+  "expo": {
+    "name": "PrayPal",
+    "slug": "praypal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icons/praypalIcon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.p3soft.praypal"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/praypal-foreground.png",
+        "backgroundImage": "./assets/icons/praypal-background.png",
+        "monochromeImage": "./assets/icons/praypal-monochrome.png",
+        "backgroundColor": "#00a8ff"
+      },
+      "package": "com.p3soft.praypal"
+    },
+    "web": {
+      "favicon": "./assets/icons/praypalIcon.png"
+    },
+    "plugins": [
+      "@notifee/react-native",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2a6ab95b-d2a0-4720-82d2-515515842ce6"
+      }
+    }
+  }
 }
