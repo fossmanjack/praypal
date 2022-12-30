@@ -128,12 +128,14 @@ export const onCreateReminder = async props => {
 		{
 			id,
 			title,
+			subtitle: 'PrayPal',
 			body,
 			android: {
 				channelId,
 				pressAction: {
 					id: 'default',
 				},
+				showTimestamp: true,
 			},
 		},
 		trigger,

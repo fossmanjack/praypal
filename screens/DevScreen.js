@@ -14,7 +14,7 @@ import * as Reminder from '../utils/Reminder';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 export default function DevScreen(props) {
-	const [ testReminder, setTestReminder ] = useState(Reminder.findNotification('reminderTest'));
+	const [ testReminder, setTestReminder ] = useState(false);
 	const [ change, setChange ] = useState(false);
 
 	const showAllNotifications = _ => {
@@ -24,12 +24,12 @@ export default function DevScreen(props) {
 	const cancelAllNotifications = _ => {
 		notifee.cancelAllNotifications().then(_ => console.log('Notifications should be cancelled.'));
 	}
-	/*
 
+/*
 	const toggleTestReminder = async value => {
 		console.log('toggleTestReminder called with:', value);
 		const triggerTime = new Date(Date.now());
-		triggerTime.setSeconds(triggerTime.getSeconds + 10);
+		triggerTime.setSeconds(triggerTime.getSeconds() + 10);
 
 		if(value) {
 			Reminder.onCreateReminder({
@@ -43,7 +43,9 @@ export default function DevScreen(props) {
 			notifee.cancelNotification('reminderTest').then(_ => setChange(true));
 		};
 	}
+*/
 
+/*
 	useEffect(_ => {
 		console.log('useEffect(DevScreen -> change) called with:', change);
 		if(change) {
@@ -56,8 +58,9 @@ export default function DevScreen(props) {
 			setChange(false);
 		}
 	}, [ change, setTestReminder ]);
-	*/
+*/
 
+/*
 	const toggleTestReminder = value => {
 		console.log('toggleTestReminder called with:', value);
 		const triggerTime = new Date(Date.now());
@@ -76,6 +79,56 @@ export default function DevScreen(props) {
 			notifee.cancelNotification('reminderTest').then(_ => setTestReminder(false));
 		}
 	};
+*/
+
+	const toggleTestReminder = value => {
+		setTestReminder(value);
+		if(value) {
+			console.log('Trying to create reminder...');
+			const triggerTime = new Date(Date.now());
+			triggerTime.setSeconds(triggerTime.getSeconds() + 10);
+
+			const testHour = triggerTime.getHours();
+			const testMinute = triggerTime.getMinutes();
+
+			Reminder.onCreateReminder({
+				id: 'reminderTest',
+				title: 'PrayPal Test',
+				body: `This is a test of PrayPal notifications.  It should trigger hourly, `+
+					`starting at ${testHour}:${testMinute}.`,
+				triggerTime,
+				repeatFrequency: 0,
+			});
+		} else {
+			notifee.cancelNotification('reminderTest');
+		}
+	}
+
+	// if the testReminder value is updated, update the corresponding alert
+	// This is proof-of-concept, I don't probably need to use useEffect for this
+/*
+	useEffect(_ => {
+		if(testReminder) {
+			console.log('Trying to create reminder...');
+			const triggerTime = new Date(Date.now());
+			triggerTime.setSeconds(triggerTime.getSeconds() + 10);
+
+			const testHour = triggerTime.getHours();
+			const testMinute = triggerTime.getMinutes();
+
+			Reminder.onCreateReminder({
+				id: 'reminderTest',
+				title: 'PrayPal Test',
+				body: `This is a test of PrayPal notifications.  It should trigger hourly, `+
+					`starting at ${testHour}:${testMinute}.`,
+				triggerTime,
+				repeatFrequency: 0,
+			});
+		} else {
+			notifee.cancelNotification('reminderTest');
+		}
+	}, [ testReminder ]);
+*/
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
