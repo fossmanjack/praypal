@@ -18,7 +18,18 @@ export default function DevScreen(props) {
 	const [ change, setChange ] = useState(false);
 
 	const showAllNotifications = _ => {
-		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
+		notifee.getTriggerNotifications()
+//			.then(ids => console.log('All trigger notifications and IDs:', ids));
+		.then(notifs => {
+			console.log('All trigger notifications active:');
+			notifs.forEach(notif => {
+				console.log('\tName:', notif.notification.title, '\n');
+				console.log('\tID:', notif.notification.id, '\n');
+				console.log('\tTimestamp:', new Date(notif.trigger.timestamp).toLocaleString(), '\n');
+				console.log('\tRepeating:', notif.trigger.repeatFrequency, '\n');
+				console.log('\n');
+			});
+		});
 	}
 
 	const cancelAllNotifications = _ => {

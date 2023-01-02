@@ -11,13 +11,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ListItem, Card, Switch } from '@rneui/themed';
 import * as Rem from '../slices/reminderSlice';
 import notifee, { TimestampTrigger, TriggerType, RepeatFrequency } from '@notifee/react-native';
+import * as Utils from '../utils/Utils';
 
 export default function ListScreen() {
 	const { _Reminders } = useSelector(S => S.reminder);
 	const dispatch = useDispatch();
-	//const [ listData, setListData ] = useState(_Reminders);
-
-	//useEffect(_ => { setListData(_Reminders); console.log('updating:', _Reminders); }, [ _Reminders ]);
 
 	const renderItem = (data, rowMap) => {
 		const { item } = data;
@@ -25,71 +23,59 @@ export default function ListScreen() {
 		const displayDate = new Date();
 		displayDate.setHours(hour, minute, 0);
 
-		const activeDaysString = ({ days }) => {
-			let ret = '';
-			ret += item.days['sunday'] ? 'S ' : '';
-			ret += item.days['monday'] ? 'M ' : '';
-			ret += item.days['tuesday'] ? 'T ' : '';
-			ret += item.days['wednesday'] ? 'W ': '';
-			ret += item.days['thursday'] ? 'T ' : '';
-			ret += item.days['friday'] ? 'F ' : '';
-			ret += item.days['saturday'] ? 'S' : '';
-
-			return ret;
-		}
-
-		console.log(`Reminder ${item.name}: ${displayDate.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })}`);
-
-// Debug code
-		if (global.__fbBatchedBridge) {
-			const origMessageQueue = global.__fbBatchedBridge;
-			const modules = origMessageQueue._remoteModuleTable;
-			const methods = origMessageQueue._remoteMethodTable;
-			global.findModuleByModuleAndMethodIds = (moduleId, methodId) => {
-				console.log(`The problematic line code is in: ${modules[moduleId]}.${methods[moduleId][methodId]}`)
-			}
-		}
-
-		global.findModuleByModuleAndMethodIds(28, 5);
-		global.findModuleByModuleAndMethodIds(3, 9);
-		global.findModuleByModuleAndMethodIds(21, 0);
-
-/*
 		return (
-			<ListItem style={{ flex: 1 }}>
-				<ListItem.Content>
-					<ListItem.Title>
-						{item.name}
-					</ListItem.Title>
-					<ListItem.Subtitle>
-						{displayDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-					</ListItem.Subtitle>
-				</ListItem.Content>
-			</ListItem>
-		);
-*/
-		return (
-			<Card>
+			<Card style={{ borderRadius: 20 }}>
 				<View style={{ flexDirection: 'row' }}>
 					<Card.Title style={{ flex: 4 }}>
-						{item.name}
+						{item.title}
 					</Card.Title>
 					<Card.Title style={{ flex: 2 }}>
-						{displayDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+						{Utils.niceTime(displayDate)}
 					</Card.Title>
 					<Switch
 						value={item.active}
-						onValueChange={value => handleUpdateReminder({ rid: item.id, data: { active: value }})}
+						onValueChange={value => handleUpdateReminder(item, value)}
 						style={{ flex: 1 }}
 					/>
 				</View>
 				<View style={{ flexDirection: 'row' }}>
-					<Text>{activeDaysString(item)}</Text>
+					{item.body}
 				</View>
 			</Card>
 		);
 	}
 
+	const handleUpdateReminder = (item, value) => {
+		const {
+			id,
+			title,
+			body,
+			hour,
+			minute,
+			active
+		} = item;
+
+		if(value) {
+			const triggerTime = new Date(Date.now());
+			triggerTime.setHours(hour, minute, 0);
+			if(triggerTime.getTime() < Date.now())
+				triggerTime.setDate(triggerTime.getDate() + 1);
+			dispatch(Rem.modifyReminder([ id, { active: true } ]));
+			Rem.createAndroidReminder({
+				id,
+				title,
+				body,
+				triggerTime,
+				repeatFrequency: RepeatFrequency.DAILY,
+			});
+		} else {
+			dispatch(Rem.modifyReminder([ id, { active: false } ]));
+			notifee.cancelNotification(id);
+		}
+	};
+
+
+/*
 	const handleUpdateReminder = ({ rid, data }) => {
 		console.log('handleUpdateReminder', rid, data);
 		dispatch(Rem.modifyReminder([ rid, data ]));
@@ -102,56 +88,7 @@ export default function ListScreen() {
 		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
 		console.log('Done.');
 	}
-
-	const hardcodeRecurringReminder = async _ => {
-		const date = new Date(Date.now());
-		date.setSeconds(date.getSeconds + 10);
-
-		console.log('hardcodeRecurringReminder called...');
-		console.log(RepeatFrequency);
-
-		const trigger: TimestampTrigger = {
-			type: TriggerType.TIMESTAMP,
-			timestamp: date.getTime(),
-		};
-
-		console.log('Awaiting permission...');
-		await notifee.requestPermission();
-		console.log('Done.');
-
-		console.log('Creating channel...');
-		const channelId = await notifee.createChannel({
-			id: 'PrayPalReminder',
-			name: 'PrayPal Reminders',
-			sound: 'church_bell',
-		});
-		console.log('Done.');
-
-		console.log('Creating trigger notification...');
-		await notifee.createTriggerNotification(
-			{
-				id: 'testRecurring',
-				title: 'Recurring Trigger',
-				body: 'This should recur every 30 seconds',
-				android: {
-					channelId,
-					pressAction: {
-						id: 'default',
-					},
-				},
-			},
-			trigger,
-		);
-		console.log('Done.');
-		console.log('Showing all existing triggers...');
-
-		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
-		console.log('Done.');
-	};
-
-	const deleteRecurringReminder = _ => {
-		notifee.cancelNotification('testRecurring');
-	}
+*/
 
 	return (
 		<>

@@ -1,114 +1,50 @@
 export const REMINDERS = [
 	{
 		id: 'defaultSunrise',
-		name: 'Sunrise',
-		text: '',
+		title: 'Sunrise',
+		body: '',
 		hour: 6,
 		minute: 0,
-		days: {
-			'sunday': true,
-			'monday': true,
-			'tuesday': true,
-			'wednesday': true,
-			'thursday': true,
-			'friday': true,
-			'saturday': true
-		},
 		active: false,
 		created: Date.now(),
 		modified: Date.now(),
 	},
 	{
 		id: 'defaultThirdHour',
-		name: 'Third Hour',
-		text: '',
+		title: 'Third Hour',
+		body: '',
 		hour: 9,
 		minute: 0,
-		days: {
-			'sunday': true,
-			'monday': true,
-			'tuesday': true,
-			'wednesday': true,
-			'thursday': true,
-			'friday': true,
-			'saturday': true
-		},
 		active: false,
 		created: Date.now(),
 		modified: Date.now(),
 	},
 	{
 		id: 'defaultSixthHour',
-		name: 'Sixth Hour',
-		text: '',
+		title: 'Sixth Hour',
+		body: '',
 		hour: 12,
 		minute: 0,
-		days: {
-			'sunday': true,
-			'monday': true,
-			'tuesday': true,
-			'wednesday': true,
-			'thursday': true,
-			'friday': true,
-			'saturday': true
-		},
 		active: false,
 		created: Date.now(),
 		modified: Date.now(),
 	},
 	{
 		id: 'defaultNinthHour',
-		name: 'Ninth Hour',
-		text: '',
+		title: 'Ninth Hour',
+		body: '',
 		hour: 15,
 		minute: 0,
-		days: {
-			'sunday': true,
-			'monday': true,
-			'tuesday': true,
-			'wednesday': true,
-			'thursday': true,
-			'friday': true,
-			'saturday': true
-		},
 		active: false,
 		created: Date.now(),
 		modified: Date.now(),
 	},
 	{
 		id: 'defaultSunset',
-		name: 'Sunset',
-		text: '',
+		title: 'Sunset',
+		body: '',
 		hour: 18,
 		minute: 0,
-		days: {
-			'sunday': true,
-			'monday': true,
-			'tuesday': true,
-			'wednesday': true,
-			'thursday': true,
-			'friday': true,
-			'saturday': true
-		},
-		active: false,
-		created: Date.now(),
-		modified: Date.now(),
-	},
-	{
-		id: 'testRecurring',
-		name: 'Test',
-		text: '',
-		hour: 0,
-		minute: 0,
-		days: {
-			'sunday': true,
-			'monday': true,
-			'tuesday': true,
-			'wednesday': true,
-			'thursday': true,
-			'friday': true,
-			'saturday': true
-		},
 		active: false,
 		created: Date.now(),
 		modified: Date.now(),
@@ -121,11 +57,10 @@ export const REMINDERS = [
 Reminders:
 {
 	id: <uuidv4>
-	name: String
-	text: String
+	title: String
+	body: String
 	hour: integer
 	minute: integer
-	days: { _ReminderDays }
 	active: bool
 }
 
