@@ -34,11 +34,16 @@ const prayerSlice = createSlice({
 			}
 		},
 		updatePrayer: (pState, action) => {
-			console.log('updatePrayer called with', action);
-			if(!action.payload) return pState;
+			console.log('*** updatePrayer called with', action);
+			if(!action.payload) {
+				console.log('##### ERROR ##### No action.payload!');
+				return pState;
+			}
+			console.log('*** action.payload found!');
 
 			let idx = pState._Prayers.indexOf(pState._Prayers.find(({ id }) => id === action.payload.id));
-			if(!idx) return pState;
+			console.log('*** Found index:', idx);
+			if(idx === -1) return pState;
 
 			return {
 				...pState,

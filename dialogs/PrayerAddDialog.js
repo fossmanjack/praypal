@@ -111,9 +111,3 @@ export default function PrayerAddDialog(props) {
 		</Dialog>
 	);
 }
-
-/*
-
-Prayers: title, body, expiration date
-
-*/

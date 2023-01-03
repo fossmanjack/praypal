@@ -14,13 +14,6 @@ export default function PrayerEditDialog(props) {
 	const { visible, toggleVisible, item } = props;
 	const [ updatedPrayer, setUpdatedPrayer ] = useState({});
 	const [ refPrayer, setRefPrayer ] = useState(item);
-
-/*
-	const [ title, setTitle ] = useState(updatedPrayer.title);
-	const [ body, setBody ] = useState(updatedPrayer.body);
-	const [ expires, setExpires ] = useState(updatedPrayer.expires);
-	const [ expireDate, setExpireDate ] = useState(new Date(updatedPrayer.expireDate));
-*/
 	const [ errorText, setErrorText ] = useState('');
 	const dispatch = useDispatch();
 
@@ -50,22 +43,7 @@ export default function PrayerEditDialog(props) {
 	}
 
 	const handleSubmitPrayer = _ => {
-		/*
-		if(refPrayer.expires) {
-
-			expireDate.setHours(23, 59, 0);
-		}
-		*/
 		dispatch(Prayer.updatePrayer({ ...refPrayer }));
-/*
-		dispatch(Prayer.updatePrayer({
-			id: item.id,
-			title,
-			body,
-			expires,
-			expireDate: expireDate.getTime()
-		}));
-*/
 		toggleVisible(!visible);
 		resetState();
 	}
@@ -137,9 +115,3 @@ export default function PrayerEditDialog(props) {
 		</Dialog>
 	);
 }
-
-/*
-
-Prayers: title, body, expiration date
-
-*/

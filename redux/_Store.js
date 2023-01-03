@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { prayerReducer } from '../slices/prayerSlice';
 import { reminderReducer } from '../slices/reminderSlice';
+import { optionsReducer } from '../slices/optionsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	persistStore,
@@ -31,7 +32,8 @@ export const _Store = configureStore({
 export const _Store = configureStore({
 	reducer: persistCombineReducers(config, {
 		prayer: prayerReducer,
-		reminder: reminderReducer
+		reminder: reminderReducer,
+		options: optionsReducer
 	}),
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

@@ -55,21 +55,6 @@ export default function ListScreen() {
 		);
 	}
 
-/*
-	useEffect(_ => {
-		if(loadEdit) toggleEditVisible(!editVisible);
-	}, [ loadEdit, editData ]);
-*/
-/*
-	useEffect(_ => {
-		if(loaded) {
-			toggleEditVisible(!editVisible);
-		} else {
-			setLoaded(true);
-		}
-	}, [ editPrayer ]);
-*/
-
 	return (
 		<>
 			<SafeAreaView>

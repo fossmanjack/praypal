@@ -1,5 +1,6 @@
 import {
 	FlatList,
+	Pressable,
 	SafeAreaView,
 	StyleSheet,
 	Text,
@@ -7,15 +8,17 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import { SwipeListView } from 'react-native-swipe-list-view';
 import { ListItem, Card, Switch } from '@rneui/themed';
 import * as Rem from '../slices/reminderSlice';
-import notifee, { TimestampTrigger, TriggerType, RepeatFrequency } from '@notifee/react-native';
+import notifee, { RepeatFrequency } from '@notifee/react-native';
 import * as Utils from '../utils/Utils';
+import ReminderEditDialog from '../dialogs/ReminderEditDialog';
 
 export default function ReminderScreen() {
 	const { _Reminders } = useSelector(S => S.reminder);
 	const dispatch = useDispatch();
+	const [ editVisible, toggleEditVisible ] = useState(false);
+	const [ editReminder, setEditReminder ] = useState(Rem.createNewReminder());
 
 	const renderItem = (data, rowMap) => {
 		const { item } = data;
@@ -24,28 +27,36 @@ export default function ReminderScreen() {
 		displayDate.setHours(hour, minute, 0);
 
 		return (
-			<Card style={{ borderRadius: 20 }}>
-				<View style={{ flexDirection: 'row' }}>
-					<Card.Title style={{ flex: 4 }}>
-						{item.title}
-					</Card.Title>
-					<Card.Title style={{ flex: 2 }}>
-						{Utils.niceTime(displayDate)}
-					</Card.Title>
-					<Switch
-						value={item.active}
-						onValueChange={value => handleUpdateReminder(item, value)}
-						style={{ flex: 1 }}
-					/>
-				</View>
-				<View style={{ flexDirection: 'row' }}>
-					{item.body}
-				</View>
-			</Card>
+			<Pressable
+				onLongPress={_ => {
+					setEditReminder({ ...data.item });
+					toggleEditVisible(true);
+				}}
+			>
+				<Card style={{ borderRadius: 20 }}>
+					<View style={{ flexDirection: 'row' }}>
+						<Card.Title style={{ flex: 4 }}>
+							{item.title}
+						</Card.Title>
+						<Card.Title style={{ flex: 2 }}>
+							{Utils.niceTime(displayDate)}
+						</Card.Title>
+						<Switch
+							value={item.active}
+							onValueChange={value => handleUpdateReminder({ ...item, active: value })}
+							style={{ flex: 1 }}
+						/>
+					</View>
+					<View style={{ flexDirection: 'row' }}>
+						{item.body}
+					</View>
+				</Card>
+			</Pressable>
 		);
 	}
 
-	const handleUpdateReminder = (item, value) => {
+	const handleUpdateReminder = (item) => {
+		// Expects a _Reminders object { id, title, body, hour, minute, active, created, modified }
 		const {
 			id,
 			title,
@@ -54,7 +65,27 @@ export default function ReminderScreen() {
 			minute,
 			active
 		} = item;
+		const triggerTime = new Date(Date.now());
+		triggerTime.setHours(hour, minute, 0);
 
+		while(triggerTime.getTime() < Date.now())
+			triggerTime.setDate(triggerTime.getDate() + 1);
+
+		dispatch(Rem.updateReminder({ ...item }));
+
+		if(active)
+			Rem.createAndroidReminder({
+				id,
+				title,
+				body,
+				triggerTime,
+				repeatFrequency: RepeatFrequency.DAILY,
+			});
+		else
+			notifee.cancelNotification(id);
+	};
+
+/*
 		if(value) {
 			const triggerTime = new Date(Date.now());
 			triggerTime.setHours(hour, minute, 0);
@@ -73,6 +104,7 @@ export default function ReminderScreen() {
 			notifee.cancelNotification(id);
 		}
 	};
+*/
 
 
 /*
@@ -98,6 +130,13 @@ export default function ReminderScreen() {
 					keyExtractor={item => item.id}
 					renderItem={renderItem}
 					bottomDivider
+				/>
+				<ReminderEditDialog
+					visible={editVisible}
+					toggleVisible={toggleEditVisible}
+					handleUpdateReminder={handleUpdateReminder}
+					item={editReminder}
+					key={editVisible}
 				/>
 			</SafeAreaView>
 		</>

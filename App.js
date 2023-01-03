@@ -24,11 +24,13 @@ import SpeedDialOverlay from './components/SpeedDialOverlay';
 import { Blurhash } from 'react-native-blurhash';
 import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './components/Loading';
+import OptionsModal from './dialogs/OptionsModal';
 
 const Tab = createBottomTabNavigator();
 const blurHashString = 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
 
 export default function App() {
+	const [ optionsVisible, toggleOptionsVisible ] = useState(false);
 
 	const restoreTriggers = async _ => {
 		console.log('Restoring triggers...');
@@ -50,7 +52,7 @@ export default function App() {
 			}}
 		>
 			<Provider store={_Store}>
-			{/*<Blurhash blurhash={blurHashString} style={{ flex: 1 }}/>*/}
+				<Blurhash blurhash={blurHashString} style={styles.background}/>
 				<NavigationContainer theme={navTheme}>
 					<Tab.Navigator
 						initialRouteName='List'
@@ -108,6 +110,10 @@ export default function App() {
 					</Tab.Navigator>
 				</NavigationContainer>
 				<SpeedDialOverlay />
+				<OptionsModal
+					visible={optionsVisible}
+					toggleVisible={toggleOptionsVisible}
+				/>
 			</Provider>
 		</PersistGate>
 	);
@@ -119,6 +125,11 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	background: {
+		...StyleSheet.absoluteFill,
+		width: '100%',
+		height: '100%'
 	},
 });
 

@@ -5,59 +5,32 @@ import {
 } from 'react-native-elements';
 import {
 	View,
-	Text
+	Text,
+	TextInput
 } from 'react-native';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { RepeatFrequency } from '@notifee/react-native';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import * as Reminder from '../utils/Reminder';
+import * as Rem from '../slices/reminderSlice';
+import * as Utils from '../utils/Utils';
+import uuid from 'react-native-uuid';
 
 export default function ReminderAddDialog(props) {
-//	const [ reminderTime, setReminderTime ] = useState(0);
-//	const [ reminderDays, setReminderDays ] = useState([ false, false, false, false, false, false, false ]);
 	const { visible, toggleVisible } = props;
-	const _ReminderDays = {
-		'monday': false,
-		'tuesday': false,
-		'wednesday': false,
-		'thursday': false,
-		'friday': false,
-		'saturday': false,
-		'sunday': false
-	};
-	const [ reminderDays, setReminderDays ] = useState(_ReminderDays);
-	const [ newReminderTime, setNewReminderTime ] = useState(new Date(Date.now()));
-	const [ reminderTitle, setReminderTitle ] = useState('');
-	const [ showPicker, setShowPicker ] = useState(false);
-/*
-	const {
-		isVisible,
-		toggleVisible,
-		addReminder,
-		showTimePicker,
-		newReminderTime,
-		setNewReminderTime
-	} = props;
-*/
+	const [ title, setTitle ] = useState('');
+	const [ body, setBody ] = useState('');
+	const [ triggerTime, setTriggerTime ] = useState(new Date(Date.now()));
+	const [ active, setActive ] = useState(false);
+	const [ errorText, setErrorText ] = useState('');
+	const dispatch = useDispatch();
+
 	const resetState = _ => {
-		setReminderDays(_ReminderDays);
-		setNewReminderTime(new Date(Date.now()));
-		setReminderTitle('');
-	}
-
-	const DayChip = ({ day }) => {
-		const myTitle = day.toUpperCase()[0];
-		const myStatus = reminderDays[day];
-		console.log('Rendering daychip for', day, 'with title', myTitle);
-
-		return (
-			<Chip
-				title={myTitle}
-				onPress={_ => setReminderDays({ ...reminderDays, [day]: !myStatus })}
-				type={myStatus ? 'solid' : 'outline'}
-			/>
-		);
+		setTitle('');
+		setBody('');
+		setErrorText('');
+		setTriggerTime(new Date(Date.now()));
+		setActive(false);
 	}
 
 	const dismissReminderAddDialog = _ => {
@@ -65,146 +38,91 @@ export default function ReminderAddDialog(props) {
 		toggleVisible(!visible);
 	}
 
-	const showTimePicker = _ => {
-		setNewReminderTime(new Date(Date.now()));
-		console.log('showTimePicker called with', newReminderTime);
+	const showPicker = _ => {
+		setTriggerTime(new Date(Date.now()));
+		console.log('showTimePicker called with', triggerTime);
 		DateTimePickerAndroid.open({
-			value: newReminderTime,
-			onChange,
+			value: triggerTime,
+			onChange: (event, selectedDate) => setTriggerTime(selectedDate),
 			mode: 'time',
 			display: 'clock',
 			is24Hour: true
 		});
 	}
 
-/*
-	const onCreateTrigger = async t => {
-		const date = new Date(t);
-		date.setSeconds(date.getSeconds() + 10);
+	const handleSubmitReminder = _ => {
+		const id = uuid.v4();
 
-		console.log('onCreateTrigger called...');
+		dispatch(Rem.addReminder({
+			id,
+			title,
+			body,
+			hour: triggerTime.getHours(),
+			minute: triggerTime.getMinutes(),
+			active,
+		}));
 
-		const trigger: TimestampTrigger = {
-			type: TriggerType.TIMESTAMP,
-			timestamp: date.getTime(),
-		};
-
-		console.log('Awaiting permission...');
-		await notifee.requestPermission();
-		console.log('Done.');
-
-		console.log('Creating channel...');
-		const channelId = await notifee.createChannel({
-			id: 'PrayPalReminder',
-			name: 'PrayPal Reminders',
-			sound: 'church bell',
+		Rem.createAndroidReminder({
+			id,
+			title,
+			body,
+			triggerTime,
+			repeatFrequency: RepeatFrequency.DAILY,
 		});
-		console.log('Done.');
-
-		console.log('Creating trigger notification...');
-		await notifee.createTriggerNotification(
-			{
-				title: 'PrayPal Test',
-				body: 'This is a test of the PrayPal Reminders notification channel',
-				android: {
-					channelId,
-					pressAction: {
-						id: 'default',
-					},
-				},
-			},
-			trigger,
-		);
-		console.log('Done.');
-		console.log('Showing all existing triggers...');
-
-		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
-		console.log('Done.');
+		dismissReminderAddDialog();
 	}
-*/
-
-/*
-	const onCreateTrigger = async t => {
-		const tt = new Date(t);
-		tt.setSeconds(tt.getSeconds + 10);
-		timestamp = tt.getTime();
-
-
-		await Reminder.createReminder({
-			title: 'PrayPal Test',
-			body: 'This is a test of the PrayPal Reminders notification channel',
-			timestamp,
-		});
-	};
-*/
-
-
 
 	return (
 		<Dialog
 			isVisible={visible}
 			onBackdropPress={dismissReminderAddDialog}
 		>
-			<Dialog.Title>
-				Add Prayer Reminder
-			</Dialog.Title>
-			<View>
+			<Dialog.Title title='Add Prayer Reminder' />
+			<TextInput
+				placeholder='Remind me...'
+				value={title}
+				onChangeText={text => setTitle(text)}
+				style={{
+					padding: 10,
+						borderWidth: 1,
+				}}
+			/>
+			{ errorText && <Text>{errorText}</Text> }
+			<TextInput
+				multiline={true}
+				numberOfLines={4}
+				placeholder='Notes ...'
+				value={body}
+				onChangeText={text => setBody(text)}
+				style={{
+					padding: 10,
+					borderWidth: 1,
+				}}
+			/>
+			<View style={{ flexDirection: 'row' }}>
+				<Text>Set Time</Text>
 				<Button
-					onPress={showTimePicker}
-					title="Select Time"
+					title={Utils.niceTime(triggerTime)}
+					onPress={showPicker}
+					key={triggerTime}
 				/>
-				<View style={{
-					flexDirection: 'row',
-					alignItems: 'center',
-					justifyContent: 'space-between',
-					paddingTop: 10
-				}}>
-					<DayChip day='sunday' />
-					<DayChip day='monday' />
-					<DayChip day='tuesday' />
-					<DayChip day='wednesday' />
-					<DayChip day='thursday' />
-					<DayChip day='friday' />
-					<DayChip day='saturday' />
-				</View>
 			</View>
 			<Dialog.Actions>
 				<Dialog.Button
-					title="Cancel"
-					onPress={dismissReminderAddDialog}
-				/>
-				<Dialog.Button
-					title='Schedule'
+					title='Pray!'
 					onPress={_ => {
-						addReminder(newReminderTime, reminderDays);
-						dismissReminderAddDialog();
+						if(!title) {
+							setErrorText('You must enter a name for this reminder!');
+						} else {
+							handleSubmitReminder();
+						}
 					}}
 				/>
 				<Dialog.Button
-					title='Test'
-					onPress={_ => Reminder.onCreateReminder({
-						title: 'PrayPal Test',
-						body: 'This is a test of PrayPal notifications',
-						triggerTime: new Date(Date.now()),
-						repeatFrequency: 0
-					})}
+					title='Cancel'
+					onPress={dismissReminderAddDialog}
 				/>
 			</Dialog.Actions>
 		</Dialog>
 	);
 }
-
-/* NOTES
-
-Reminders:
-{
-	id: <uuidv4>
-	name: String
-	text: String
-	hour: integer
-	minute: integer
-	days: { _ReminderDays }
-	active: bool
-}
-
-*/

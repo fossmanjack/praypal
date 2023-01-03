@@ -16,25 +16,22 @@ const reminderSlice = createSlice({
 			// expects [ rid, { props } ] as action.payload
 
 		},
-		modifyReminder: (rState, action) => {
-			// expects [ rid, { updated props } ] as action.payload
-			console.log('modifyReminder', action.payload);
-			const [ id, props ] = action.payload;
-			let oldr = rState._Reminders.find(ob => ob.id === id);
-			let idx = rState._Reminders.indexOf(oldr);
+		updateReminder: (rState, action) => {
+			if(!action.payload) {
+				return rState;
+			}
+
+			let idx = rState._Reminders.indexOf(rState._Reminders.find(({ id }) => id === action.payload.id));
+			if(idx === -1) return rState;
 
 			return {
 				...rState,
 				_Reminders: [
 					...rState._Reminders.slice(0, idx),
-					{
-						...oldr,
-						...props
-					},
+					{ ...action.payload, modified: Date.now() },
 					...rState._Reminders.slice(idx + 1)
 				]
 			}
-
 		},
 		deleteReminder: (rState, action) => {
 			// expects rid as action.payload
@@ -43,17 +40,17 @@ const reminderSlice = createSlice({
 	},
 });
 
-export const createNewReminder = date => {
+export const createNewReminder = (date = new Date(Date.now())) => {
 	// Expects a date object
 	return {
 		id: uuid.v4(),
 		name: 'New reminder',
 		text: '',
-		hour: date.getHour(),
-		minute: date.getMinute(),
+		hour: date.getHours(),
+		minute: date.getMinutes(),
 		active: false,
-		created: date,
-		modified: date,
+		created: date.getTime(),
+		modified: date.getTime(),
 	};
 };
 
@@ -65,6 +62,9 @@ export const createAndroidReminder = async props => {
 		triggerTime,
 		repeatFrequency = notifee.RepeatFrequency.NONE,
 	} = props;
+
+	while(triggerTime.getTime() < Date.now())
+		triggerTime.setDate(triggerTime.getDate() + 1);
 
 //	triggerTime.setSeconds(triggerTime.getSeconds() + 10);
 
@@ -140,7 +140,7 @@ export const reminderReducer = reminderSlice.reducer;
 
 export const {
 	addReminder,
-	modifyReminder,
+	updateReminder,
 	deleteReminder
 } = reminderSlice.actions;
 

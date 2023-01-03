@@ -6,8 +6,8 @@
 - [x] Rehydrate
 - [ ] Background fetch data files
 - [x] Edit prayer
-- [ ] Add new reminder
-- [ ] Edit reminder
+- [x] Add new reminder
+- [x] Edit reminder
 - [ ] Headers
 - [ ] Options dialog
 - [ ] Sunrise and sunset alerts
@@ -21,7 +21,8 @@
 - [ ] Reminder icon
 - [x] Keys missing
 - [ ] Daily alarms not triggering
-- [ ] Edit first prayer on list doesn't work
+- [x] Edit first prayer on list doesn't work
+- [ ] Reminders screen not updating when new reminders added
 
 
 ### Recurring Sunrise/Sunset
