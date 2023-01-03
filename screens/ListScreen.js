@@ -1,80 +1,96 @@
 import {
 	FlatList,
+	Pressable,
 	SafeAreaView,
 	StyleSheet,
 	Text,
 	View
 } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-//import { SwipeListView } from 'react-native-swipe-list-view';
-import { ListItem } from '@rneui/themed';
+import { Card } from '@rneui/themed';
+import PrayerEditDialog from '../dialogs/PrayerEditDialog';
 
 export default function ListScreen() {
 	const { _Prayers } = useSelector(S => S.prayer);
+	const [ editPrayer, setEditPrayer ] = useState(
+		{
+			id: 'blank',
+			title: 'Blank prayer',
+			body: '',
+			expires: false,
+			expireDate: 0
+		}
+	);
+	const [ loadEdit, setLoadEdit ] = useState(false);
+	const [ editVisible, toggleEditVisible ] = useState(false);
+	const [ loaded, setLoaded ] = useState(false);
 
 	const renderItem = (data, rowMap) => {
-		const { item } = data;
+		const { item: { title, body, expires, expireDate }} = data;
+		const expDate = new Date(expireDate);
+		const expText = expires ? `Expires: ${expDate.toLocaleDateString()}` : '';
+
 		return (
-			<ListItem style={{ flex: 1 }}>
-				<ListItem.Content>
-					<ListItem.Title>
-						{item.title}
-					</ListItem.Title>
-					<ListItem.Subtitle>
-						{item.text}
-					</ListItem.Subtitle>
-				</ListItem.Content>
-			</ListItem>
+			<Pressable
+				onLongPress={_ => {
+					setEditPrayer({ ...data.item });
+					toggleEditVisible(true);
+				}}
+			>
+				<Card style={styles.cardActive}>
+					<View style={{ flexDirection: 'row' }}>
+						<Card.Title style={{ flex: 4 }}>
+							{title}
+						</Card.Title>
+						<Card.Title style={{ flex: 4 }}>
+							{expText}
+						</Card.Title>
+					</View>
+					<View style={{ flexDirection: 'row' }}>
+						<Text>{body}</Text>
+					</View>
+				</Card>
+			</Pressable>
 		);
 	}
+
+/*
+	useEffect(_ => {
+		if(loadEdit) toggleEditVisible(!editVisible);
+	}, [ loadEdit, editData ]);
+*/
+/*
+	useEffect(_ => {
+		if(loaded) {
+			toggleEditVisible(!editVisible);
+		} else {
+			setLoaded(true);
+		}
+	}, [ editPrayer ]);
+*/
 
 	return (
 		<>
 			<SafeAreaView>
 				<FlatList
 					data={_Prayers}
-					keyExtractor={item => item.id}
+					keyExtractor={data => {
+						console.log('Extracting key...');
+						console.log(data);
+						return data.id;
+					}}
 					renderItem={renderItem}
 				/>
 			</SafeAreaView>
-		</>
-	);
-/*
-	return (
-		<>
-			<SwipeListView
-				data={_Prayers}
-				key={_Prayers}
-				renderItem={renderItem}
-				leftActivationValue={75}
-				leftActionValue={200}
-				onLeftAction={handleDelete}
-				rightActivationValue={75}
-				rightActionValue={200}
-				onRightAction={handleEdit}
-				bottomDivider
-				closeOnRowPress
-				closeOnRowBeginSwipe
-				closeOnRowOpen
-				closeOnScroll
+			<PrayerEditDialog
+				visible={editVisible}
+				toggleVisible={toggleEditVisible}
+				item={editPrayer}
+				key={editVisible}
 			/>
-			<PBO />
 		</>
 	);
-*/
-
-/*
-	return (
-		<View style={styles.container}>
-			<Text style={{
-				fontWeight: 'bold'
-			}}>
-				Your prayers go here!
-			</Text>
-			<PBO />
-		</View>
-	);
-*/
 }
 
 const styles = StyleSheet.create({
@@ -83,5 +99,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	cardActive: {
+		borderRadius: 20,
 	},
 });

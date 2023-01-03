@@ -1,10 +1,11 @@
 ### Feature schedule
 
-- [ ] Toggle existing reminder
-- [ ] Persistence
-- [ ] Rehydrate
+- [x] Power management
+- [x] Toggle existing reminder
+- [x] Persistence
+- [x] Rehydrate
 - [ ] Background fetch data files
-- [ ] Edit prayer
+- [x] Edit prayer
 - [ ] Add new reminder
 - [ ] Edit reminder
 - [ ] Headers
@@ -16,9 +17,11 @@
 
 ### Bug fixes
 
-- [ ] Reminder sound
+- [x] Reminder sound
 - [ ] Reminder icon
-- [ ] Keys missing
+- [x] Keys missing
+- [ ] Daily alarms not triggering
+- [ ] Edit first prayer on list doesn't work
 
 
 ### Recurring Sunrise/Sunset

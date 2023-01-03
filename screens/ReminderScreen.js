@@ -13,7 +13,7 @@ import * as Rem from '../slices/reminderSlice';
 import notifee, { TimestampTrigger, TriggerType, RepeatFrequency } from '@notifee/react-native';
 import * as Utils from '../utils/Utils';
 
-export default function ListScreen() {
+export default function ReminderScreen() {
 	const { _Reminders } = useSelector(S => S.reminder);
 	const dispatch = useDispatch();
 

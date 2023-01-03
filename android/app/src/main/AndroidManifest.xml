@@ -26,10 +26,6 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.p3soft.tosaigh"/>
-        <data android:scheme="exp+caibideil"/>
-        <data android:scheme="com.p3soft.celticprayer"/>
-        <data android:scheme="exp+celticprayer"/>
         <data android:scheme="com.p3soft.praypal"/>
         <data android:scheme="exp+praypal"/>
       </intent-filter>

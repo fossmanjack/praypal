@@ -11,6 +11,7 @@ import {
 	Switch
 } from '@rneui/themed';
 import * as Reminder from '../utils/Reminder';
+import { _Store, _Persist } from '../redux/_Store';
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 export default function DevScreen(props) {
@@ -18,6 +19,7 @@ export default function DevScreen(props) {
 	const [ change, setChange ] = useState(false);
 
 	const showAllNotifications = _ => {
+		console.log('Show all notifications', new Date(Date.now()).toLocaleString());
 		notifee.getTriggerNotifications()
 //			.then(ids => console.log('All trigger notifications and IDs:', ids));
 		.then(notifs => {
@@ -34,6 +36,11 @@ export default function DevScreen(props) {
 
 	const cancelAllNotifications = _ => {
 		notifee.cancelAllNotifications().then(_ => console.log('Notifications should be cancelled.'));
+	}
+
+	const purgeReduxState = _ => {
+		_Persist.purge();
+		cancelAllNotifications();
 	}
 
 /*
@@ -157,6 +164,22 @@ export default function DevScreen(props) {
 					title='Clear'
 					buttonStyle={styles.button}
 					onPress={cancelAllNotifications}
+				/>
+			</Card>
+			<Card style={styles.card}>
+				<Text>Purge Redux State</Text>
+				<Button
+					title='Purge'
+					buttonStyle={styles.button}
+					onPress={purgeReduxState}
+				/>
+			</Card>
+			<Card style={styles.card}>
+				<Text>Dump Redux State</Text>
+				<Button
+					title='Dump'
+					buttonStyle={styles.button}
+					onPress={_ => console.log('Dump redux state...\n', _Store.getState())}
 				/>
 			</Card>
 			<Card style={styles.card}>

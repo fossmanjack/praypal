@@ -12,10 +12,9 @@ import {
 	Icon,
 	ListItem
 } from '@rneui/themed';
-import { PRAYERS } from '../data/PRAYERS';
+import { useSelector } from 'react-redux';
 
-//function renderMain(data, rowMap) {
-const AccordionListItem = ({ item }) => {
+const AccordionListItem = ({ item, _Book }) => {
 	const [ expanded, setExpanded ] = useState(false);
 
 	return (
@@ -29,20 +28,11 @@ const AccordionListItem = ({ item }) => {
 			onPress={_ => setExpanded(!expanded)}
 		>
 			{
-				Object.keys(PRAYERS)
-					.filter(p => PRAYERS[p].tags.includes(item))
+				Object.keys(_Book)
+					.filter(p => _Book[p].tags.includes(item))
 					.map((p, i) => {
 						return (
-							<AccordionPrayerItem item={p} />
-							/*
-							<ListItem key={i} bottomDivider>
-								<ListItem.Content>
-									<Pressable>
-										<Text>{PRAYERS[p].name.en}</Text>
-									</Pressable>
-								</ListItem.Content>
-							</ListItem>
-							*/
+							<AccordionPrayerItem item={p} _Book={_Book} key={item.id} />
 						)
 					})
 			}
@@ -51,7 +41,7 @@ const AccordionListItem = ({ item }) => {
 	);
 }
 
-const AccordionPrayerItem = ({ item }) => {
+const AccordionPrayerItem = ({ item, _Book }) => {
 	const [ expanded, setExpanded ] = useState(false);
 
 	return (
@@ -59,7 +49,7 @@ const AccordionPrayerItem = ({ item }) => {
 			style={styles.subHeading}
 			content={
 				<ListItem.Content bottomDivider>
-					<ListItem.Title>{PRAYERS[item].name.en}</ListItem.Title>
+					<ListItem.Title>{_Book[item].name.en}</ListItem.Title>
 				</ListItem.Content>
 			}
 			isExpanded={expanded}
@@ -81,7 +71,7 @@ const AccordionPrayerItem = ({ item }) => {
 			<ListItem.Content>
 				<Card containerStyle={{ marginTop: 0}}>
 					<Text>
-						{PRAYERS[item].text.en}
+						{_Book[item].text.en}
 					</Text>
 				</Card>
 			</ListItem.Content>
@@ -90,45 +80,20 @@ const AccordionPrayerItem = ({ item }) => {
 }
 
 export default function BookScreen() {
-	const categories = Object.keys(PRAYERS).reduce((acc, p) => {
-		PRAYERS[p].tags.forEach(t => {
+	const _Book = useSelector(S => S.prayer._Book) || {};
+
+	const categories = Object.keys(_Book).reduce((acc, p) => {
+		_Book[p].tags.forEach(t => {
 			if(!acc.find(tag => tag === t)) acc.push(t);
 		});
 		return acc;
 	}, []);
 
-	// An accordion menu for each category containing titles.  Touch the title
-	// for the full prayer.
-
-/*
-	const renderMain = (data, rowMap) => {
-		const [ expanded, setExpanded ] = useState(false);
-		console.log(data);
-		const { item }  = data;
-
-		return (
-			<ListItem.Accordion
-				content={
-					<ListItem.Content>
-						<ListItem.Title>{item}</ListItem.Title>
-					</ListItem.Content>
-				}
-				isExpanded={expanded}
-				onPress={_ => setExpanded(!expanded)}
-			>
-				<View>
-					<Text>Test</Text>
-				</View>
-			</ListItem.Accordion>
-
-		);
-	}
-*/
 	const renderMain = (data, rowMap) => {
 		const { item } = data;
 		console.log(`Item: ${item}`);
 
-		return <AccordionListItem item={item} />;
+		return <AccordionListItem item={item} _Book={_Book} key={item.id} />;
 	}
 
 	return (
@@ -136,28 +101,12 @@ export default function BookScreen() {
 			<FlatList
 				data={categories}
 				renderItem={renderMain}
-				keyGenerator={item => item}
+				keyGenerator={item => item.id}
 			/>
 		</>
 	);
 
 
-/*
-	return (
-		<View style={styles.container}>
-			<Text style={{
-				fontWeight: 'bold'
-			}}>
-				{PRAYERS.niceneCreed.name.en}
-			</Text>
-			<Text style={styles.textDisplay}>
-				{PRAYERS.niceneCreed.text.en}
-			</Text>
-			<StatusBar style="auto" />
-			<PBO />
-		</View>
-	);
-*/
 }
 
 const styles = StyleSheet.create({

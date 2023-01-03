@@ -19,75 +19,97 @@ import BookScreen from './screens/BookScreen';
 import ListScreen from './screens/ListScreen';
 import ReminderScreen from './screens/ReminderScreen';
 import DevScreen from './screens/DevScreen';
-import { _Store } from './redux/_Store';
+import { _Store, _Persist } from './redux/_Store';
 import SpeedDialOverlay from './components/SpeedDialOverlay';
 import { Blurhash } from 'react-native-blurhash';
+import { PersistGate } from 'redux-persist/integration/react';
+import Loading from './components/Loading';
 
 const Tab = createBottomTabNavigator();
 const blurHashString = 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
 
 export default function App() {
 
+	const restoreTriggers = async _ => {
+		console.log('Restoring triggers...');
+	};
+
+	const updatePrayers = async _ => {
+		console.log('Updating prayers...');
+	};
+
 	return (
-		<Provider store={_Store}>
-		{/*<Blurhash blurhash={blurHashString} style={{ flex: 1 }}/>*/}
-			<NavigationContainer theme={navTheme}>
-				<Tab.Navigator
-					screenOptions={({ route }) => ({
-						tabBarIcon: ({ focused, color, size }) => {
-							let iconName, iconFamily;
+		<PersistGate
+			loading={<Loading />}
+			persistor={_Persist}
+			onBeforeLift={async _ => {
+				await restoreTriggers();
+				console.log('Done.');
+				await updatePrayers();
+				console.log('Done.');
+			}}
+		>
+			<Provider store={_Store}>
+			{/*<Blurhash blurhash={blurHashString} style={{ flex: 1 }}/>*/}
+				<NavigationContainer theme={navTheme}>
+					<Tab.Navigator
+						initialRouteName='List'
+						screenOptions={({ route }) => ({
+							tabBarIcon: ({ focused, color, size }) => {
+								let iconName, iconFamily;
 
-							switch(route.name) {
-								case 'Book':
-									iconName = focused ? 'book-open' : 'book';
-									iconFamily = 'font-awesome-5';
-									break;
-								case 'List':
-									iconName = focused ? 'list-circle' : 'list-circle-outline';
-									iconFamily = 'ionicon';
-									break;
-								case 'Reminders':
-									iconName = focused ? 'clock-alert' : 'clock-alert-outline';
-									iconFamily = 'material-community';
-									break;
-								case 'Dev':
-									iconName = focused ? 'developer-mode' : 'perm-device-info';
-									iconFamily = 'material';
-									break;
-								case 'Almanac':
-									iconName = focused ? 'calendar-text' : 'calendar-text-outline';
-									iconFamily = 'material-community';
-									break;
-								case 'Tracker':
-									iconName = focused ? 'bar-chart-sharp' : 'bar-chart-outline';
-									iconFamily='ionicon';
-									break;
-								default:
-									iconName = focused ? 'info-circle' : 'info';
-									iconFamily = 'font-awesome';
-							}
+								switch(route.name) {
+									case 'Book':
+										iconName = focused ? 'book-open' : 'book';
+										iconFamily = 'font-awesome-5';
+										break;
+									case 'List':
+										iconName = focused ? 'list-circle' : 'list-circle-outline';
+										iconFamily = 'ionicon';
+										break;
+									case 'Reminders':
+										iconName = focused ? 'clock-alert' : 'clock-alert-outline';
+										iconFamily = 'material-community';
+										break;
+									case 'Dev':
+										iconName = focused ? 'developer-mode' : 'perm-device-info';
+										iconFamily = 'material';
+										break;
+									case 'Almanac':
+										iconName = focused ? 'calendar-text' : 'calendar-text-outline';
+										iconFamily = 'material-community';
+										break;
+									case 'Tracker':
+										iconName = focused ? 'bar-chart-sharp' : 'bar-chart-outline';
+										iconFamily='ionicon';
+										break;
+									default:
+										iconName = focused ? 'info-circle' : 'info';
+										iconFamily = 'font-awesome';
+								}
 
-							return (
-								<Icon
-									name={iconName}
-									type={iconFamily}
-									size={size}
-									color={color}
-								/>
-							);
-						},
-						tabBarActiveTintColor: 'tomato',
-						tabBarInactiveTintColor: 'gray',
-					})}
-				>
-					<Tab.Screen name='Book' component={BookScreen} />
-					<Tab.Screen name='List' component={ListScreen} />
-					<Tab.Screen name='Reminders' component={ReminderScreen} />
-					<Tab.Screen name='Dev' component={DevScreen} />
-				</Tab.Navigator>
-			</NavigationContainer>
-			<SpeedDialOverlay />
-		</Provider>
+								return (
+									<Icon
+										name={iconName}
+										type={iconFamily}
+										size={size}
+										color={color}
+									/>
+								);
+							},
+							tabBarActiveTintColor: 'tomato',
+							tabBarInactiveTintColor: 'gray',
+						})}
+					>
+						<Tab.Screen name='Book' component={BookScreen} />
+						<Tab.Screen name='List' component={ListScreen} />
+						<Tab.Screen name='Reminders' component={ReminderScreen} />
+						<Tab.Screen name='Dev' component={DevScreen} />
+					</Tab.Navigator>
+				</NavigationContainer>
+				<SpeedDialOverlay />
+			</Provider>
+		</PersistGate>
 	);
 }
 
