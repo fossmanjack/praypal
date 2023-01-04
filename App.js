@@ -10,7 +10,7 @@ import {
 import { PRAYERS } from './data/PRAYERS';
 //import { FAB } from 'react-native-elements';
 //import { Modal, Dialog } from 'react-native';
-import { FAB, Dialog, Icon } from '@rneui/themed';
+import { Button, Icon } from '@rneui/themed';
 import { useState } from 'react';
 import { Provider, useSelector } from 'react-redux';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
@@ -39,6 +39,29 @@ export default function App() {
 	const updatePrayers = async _ => {
 		console.log('Updating prayers...');
 	};
+
+	const Header = props => {
+
+		return (
+			<View style={styles.header}>
+				<Text>PrayPal: {props.title}</Text>
+			</View>
+		);
+	}
+
+	const OptionsButton = _ => {
+
+		return (
+			<Button
+				onPress={_ => toggleOptionsVisible(!optionsVisible)}
+				type='outline'
+				icon={{
+					name: 'options-outline',
+					type: 'ionicon'
+				}}
+			/>
+		);
+	}
 
 	return (
 		<PersistGate
@@ -103,10 +126,42 @@ export default function App() {
 							tabBarInactiveTintColor: 'gray',
 						})}
 					>
-						<Tab.Screen name='Book' component={BookScreen} />
-						<Tab.Screen name='List' component={ListScreen} />
-						<Tab.Screen name='Reminders' component={ReminderScreen} />
-						<Tab.Screen name='Dev' component={DevScreen} />
+						<Tab.Screen
+							name='Book'
+							component={BookScreen}
+							options={{
+								title: '',
+								headerTitle: props => <Header title='Prayer Book' />,
+								headerRight: _ => <OptionsButton />,
+							}}
+						/>
+						<Tab.Screen
+							name='List'
+							component={ListScreen}
+							options={{
+								title: '',
+								headerTitle: props => <Header title='Prayer List' />,
+								headerRight: _ => <OptionsButton />,
+							}}
+						/>
+						<Tab.Screen
+							name='Reminders'
+							component={ReminderScreen}
+							options={{
+								title: '',
+								headerTitle: props => <Header title='Reminders' />,
+								headerRight: _ => <OptionsButton />,
+							}}
+						/>
+						<Tab.Screen
+							name='Dev'
+							component={DevScreen}
+							options={{
+								title: '',
+								headerTitle: props => <Header title='Dev Options' />,
+								headerRight: _ => <OptionsButton />,
+							}}
+						/>
 					</Tab.Navigator>
 				</NavigationContainer>
 				<SpeedDialOverlay />
@@ -130,6 +185,8 @@ const styles = StyleSheet.create({
 		...StyleSheet.absoluteFill,
 		width: '100%',
 		height: '100%'
+	},
+	header: {
 	},
 });
 

@@ -33,7 +33,7 @@ export default function ReminderScreen() {
 					toggleEditVisible(true);
 				}}
 			>
-				<Card style={{ borderRadius: 20 }}>
+				<Card containerStyle={styles.cardContainer}>
 					<View style={{ flexDirection: 'row' }}>
 						<Card.Title style={{ flex: 4 }}>
 							{item.title}
@@ -149,6 +149,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	cardContainer: {
+		borderRadius: 15,
 	},
 });
 

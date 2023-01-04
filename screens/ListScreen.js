@@ -38,7 +38,7 @@ export default function ListScreen() {
 					toggleEditVisible(true);
 				}}
 			>
-				<Card style={styles.cardActive}>
+				<Card containerStyle={styles.cardActive}>
 					<View style={{ flexDirection: 'row' }}>
 						<Card.Title style={{ flex: 4 }}>
 							{title}
@@ -86,6 +86,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	cardActive: {
-		borderRadius: 20,
+		borderRadius: 15,
 	},
 });

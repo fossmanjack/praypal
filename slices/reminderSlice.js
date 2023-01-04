@@ -13,8 +13,24 @@ const reminderSlice = createSlice({
 	initialState,
 	reducers: {
 		addReminder: (rState, action) => {
-			// expects [ rid, { props } ] as action.payload
+			// expects new reminder object as action payload
+			if(!action.payload) return rState;
 
+			const remArr = [ ...rState._Reminders,
+				{
+					...action.payload,
+					created: Date.now(),
+					modified: Date.now(),
+				}
+			].sort((a, b) => {
+				if(a.hour !== b.hour) return a.hour - b.hour;
+				else return a.minute - b.minute;
+			});
+
+			return {
+				...rState,
+				_Reminders: [ ...remArr ]
+			}
 		},
 		updateReminder: (rState, action) => {
 			if(!action.payload) {
@@ -34,8 +50,10 @@ const reminderSlice = createSlice({
 			}
 		},
 		deleteReminder: (rState, action) => {
-			// expects rid as action.payload
-
+			return {
+				...rState,
+				_Reminders: [ ...rState._Reminders.filter(rem => rem.id !== action.payload.id) ],
+			}
 		},
 	},
 });

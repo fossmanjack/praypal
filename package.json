@@ -1,6 +1,6 @@
 {
-  "name": "caibideil",
-  "version": "1.0.0",
+  "name": "PrayPal",
+  "version": "0.2.0",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",

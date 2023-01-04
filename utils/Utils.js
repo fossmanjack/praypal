@@ -15,3 +15,11 @@ export const parseName = val => val ? camelize(sanitize(val.trim())) : '';
 
 // Checks whether two strings collide in their parsed form
 export const collisionCheck = (a, b) => parseName(a) === parseName(b);
+
+export const getBlurHashString = theme => {
+	switch(theme) {
+		default:
+			return 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
+	}
+};
+

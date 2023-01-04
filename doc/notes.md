@@ -4,16 +4,21 @@
 - [x] Toggle existing reminder
 - [x] Persistence
 - [x] Rehydrate
-- [ ] Background fetch data files
 - [x] Edit prayer
 - [x] Add new reminder
 - [x] Edit reminder
+- [ ] Move everything to Main screen so as to have access to useSelector
 - [ ] Headers
 - [ ] Options dialog
+- [ ] Favorite prayerbook prayers
+- [ ] Virtue tracker
+- [ ] Background fetch data files
+
+### Future additions
+
 - [ ] Sunrise and sunset alerts
 - [ ] Moon phase
 - [ ] Almanac page
-- [ ] Virtue tracker
 
 ### Bug fixes
 
@@ -22,7 +27,7 @@
 - [x] Keys missing
 - [ ] Daily alarms not triggering
 - [x] Edit first prayer on list doesn't work
-- [ ] Reminders screen not updating when new reminders added
+- [x] Reminders screen not updating when new reminders added
 
 
 ### Recurring Sunrise/Sunset

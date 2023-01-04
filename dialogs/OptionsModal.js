@@ -1,9 +1,12 @@
 import {
 	Modal,
 	Pressable,
-	StyleSheet
+	StyleSheet,
+	Text,
+	View
 } from 'react-native';
 import {
+	Button,
 	Card,
 } from '@rneui/themed';
 import { useState, useEffect } from 'react';
@@ -20,6 +23,17 @@ export default function OptionsModal(props) {
 
 	return (
 		<Modal visible={visible}>
+			<View style={styles.header}>
+				<Text>PrayPal: Options</Text>
+				<Button
+					onPress={_ => toggleVisible(!visible)}
+					type='outline'
+					icon={{
+						name: 'options-outline',
+						type: 'ionicon'
+					}}
+				/>
+			</View>
 			<Pressable>
 				<Card>
 					<Card.Title>Version: {CONSTANTS.VERSION}</Card.Title>
@@ -30,5 +44,8 @@ export default function OptionsModal(props) {
 }
 
 const styles = StyleSheet.create({
+	header: {
+		flexDirection: 'row',
 
+	}
 });

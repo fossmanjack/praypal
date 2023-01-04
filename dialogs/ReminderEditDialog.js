@@ -78,7 +78,7 @@ export default function ReminderEditDialog(props) {
 
 	const handleDeleteReminder = _ => {
 		console.log('Deleting reminder with id', item.id);
-		dispatch(Rem.deleteReminder(item.id));
+		dispatch(Rem.deleteReminder(item));
 		toggleVisible(!visible);
 	}
 
