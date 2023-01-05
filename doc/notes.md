@@ -7,7 +7,8 @@
 - [x] Edit prayer
 - [x] Add new reminder
 - [x] Edit reminder
-- [ ] Move everything to Main screen so as to have access to useSelector
+- [x] Move everything to Main screen so as to have access to useSelector
+- [x] Change prayerbook to new format
 - [ ] Headers
 - [ ] Options dialog
 - [ ] Favorite prayerbook prayers

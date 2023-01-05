@@ -18,6 +18,7 @@ export default function OptionsModal(props) {
 	const { visible, toggleVisible } = props;
 	const _Options = useSelector(S => S.options);
 	const [ devPress, setDevPress ] = useState(0);
+	const dispatch = useDispatch();
 
 	const onTap = _ => setDevPress(devPress++);
 
@@ -34,7 +35,9 @@ export default function OptionsModal(props) {
 					}}
 				/>
 			</View>
-			<Pressable>
+			<Pressable
+				onLongPress={_ => dispatch(Opts.toggleDevMode())}
+			>
 				<Card>
 					<Card.Title>Version: {CONSTANTS.VERSION}</Card.Title>
 				</Card>

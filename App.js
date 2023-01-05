@@ -1,5 +1,5 @@
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
+//import 'react-native-gesture-handler';
+//import { StatusBar } from 'expo-status-bar';
 import {
 	Modal,
 	StyleSheet,
@@ -7,30 +7,32 @@ import {
 	TextInput,
 	View
 } from 'react-native';
-import { PRAYERS } from './data/PRAYERS';
+//import { PRAYERS } from './data/PRAYERS';
 //import { FAB } from 'react-native-elements';
 //import { Modal, Dialog } from 'react-native';
-import { Button, Icon } from '@rneui/themed';
-import { useState } from 'react';
-import { Provider, useSelector } from 'react-redux';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import BookScreen from './screens/BookScreen';
-import ListScreen from './screens/ListScreen';
-import ReminderScreen from './screens/ReminderScreen';
-import DevScreen from './screens/DevScreen';
+//import { Button, Icon } from '@rneui/themed';
+//import { useState } from 'react';
+//import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
+//import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//import BookScreen from './screens/BookScreen';
+//import ListScreen from './screens/ListScreen';
+//import ReminderScreen from './screens/ReminderScreen';
+//import DevScreen from './screens/DevScreen';
 import { _Store, _Persist } from './redux/_Store';
-import SpeedDialOverlay from './components/SpeedDialOverlay';
-import { Blurhash } from 'react-native-blurhash';
+//import SpeedDialOverlay from './components/SpeedDialOverlay';
+//import { Blurhash } from 'react-native-blurhash';
 import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './components/Loading';
-import OptionsModal from './dialogs/OptionsModal';
+//import OptionsModal from './dialogs/OptionsModal';
+import Main from './components/Main';
 
-const Tab = createBottomTabNavigator();
-const blurHashString = 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
+//const Tab = createBottomTabNavigator();
+//const blurHashString = 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
 
 export default function App() {
-	const [ optionsVisible, toggleOptionsVisible ] = useState(false);
+//	const [ optionsVisible, toggleOptionsVisible ] = useState(false);
 
 	const restoreTriggers = async _ => {
 		console.log('Restoring triggers...');
@@ -39,6 +41,7 @@ export default function App() {
 	const updatePrayers = async _ => {
 		console.log('Updating prayers...');
 	};
+/*
 
 	const Header = props => {
 
@@ -62,7 +65,25 @@ export default function App() {
 			/>
 		);
 	}
+*/
 
+	return (
+		<PersistGate
+			loading={<Loading />}
+			persistor={_Persist}
+			onBeforeLift={async _ => {
+				await restoreTriggers();
+				console.log('Done.');
+				await updatePrayers();
+				console.log('Done.');
+			}}
+		>
+			<Provider store={_Store}>
+				<Main />
+			</Provider>
+		</PersistGate>
+	);
+/*
 	return (
 		<PersistGate
 			loading={<Loading />}
@@ -172,8 +193,11 @@ export default function App() {
 			</Provider>
 		</PersistGate>
 	);
+*/
+
 }
 
+/*
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -197,3 +221,4 @@ const navTheme = {
 		background: 'transparent'
 	}
 };
+*/

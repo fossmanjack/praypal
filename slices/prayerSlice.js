@@ -5,6 +5,7 @@ const initialState = {
 	_Prayers: [ ],
 	_Book: PRAYERS,
 	_BookVersion: 1,
+	_Favorites: { },
 }
 
 const prayerSlice = createSlice({
@@ -68,6 +69,31 @@ const prayerSlice = createSlice({
 				_BookVersion: action.payload
 			}
 		},
+		toggleFavorite: (pState, action) => {
+			// expects [ id, { prayer object }]
+			console.log('prayerSlice toggleFavorite ------');
+			console.log(action);
+			const [ id, prayerOb ] = action.payload;
+			console.log(id, prayerOb);
+
+			if(Object.keys(pState._Favorites).includes(id)) {
+				console.log('prayerSlice deleting favorite with id', id);
+				let hold = { ...pState._Favorites };
+				delete hold[id];
+				return {
+					...pState,
+					_Favorites: { ...hold }
+				};
+			} else {
+				return {
+					...pState,
+					_Favorites: {
+						...pState._Favorites,
+						[id]: { ...prayerOb },
+					}
+				};
+			}
+		},
 	}
 });
 
@@ -78,7 +104,8 @@ export const {
 	deletePrayer,
 	updatePrayer,
 	replacePrayerBook,
-	updatePrayerBookVersion
+	updatePrayerBookVersion,
+	toggleFavorite
 } = prayerSlice.actions;
 
 

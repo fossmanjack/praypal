@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-	denomination: 'Orthodox',
-	language: 'en-US',
+	denomination: 'orthodox',
+	language: 'en',
 	devMode: false,
 	theme: 'dark'
 }
@@ -11,9 +11,19 @@ const optionsSlice = createSlice({
 	name: 'options',
 	initialState,
 	reducers: {
-		setDenomination: (oState, action) => oState.denomination = action.payload,
+		setDenomination: (oState, action) => {
+			return {
+				...oState,
+				denomination: action.payload
+			};
+		},
 		setLanguage: (oState, action) => oState.language = action.payload,
-		toggleDevMode: (oState, action) => oState.devMode = !oState.devMode,
+		toggleDevMode: (oState, action) => {
+			return {
+				...oState,
+				devMode: !oState.devMode,
+			}
+		},
 		setTheme: (oState, action) => oState.theme = action.payload
 	},
 });

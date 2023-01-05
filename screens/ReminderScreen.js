@@ -13,9 +13,11 @@ import * as Rem from '../slices/reminderSlice';
 import notifee, { RepeatFrequency } from '@notifee/react-native';
 import * as Utils from '../utils/Utils';
 import ReminderEditDialog from '../dialogs/ReminderEditDialog';
+import { _Styles, _Colors } from '../assets/_Styles';
 
 export default function ReminderScreen() {
 	const { _Reminders } = useSelector(S => S.reminder);
+	const { theme } = useSelector(S => S.options);
 	const dispatch = useDispatch();
 	const [ editVisible, toggleEditVisible ] = useState(false);
 	const [ editReminder, setEditReminder ] = useState(Rem.createNewReminder());
@@ -33,22 +35,23 @@ export default function ReminderScreen() {
 					toggleEditVisible(true);
 				}}
 			>
-				<Card containerStyle={styles.cardContainer}>
-					<View style={{ flexDirection: 'row' }}>
-						<Card.Title style={{ flex: 4 }}>
+				<Card containerStyle={_Styles[theme].cardActive}>
+					<View style={_Styles[theme].cardTitle}>
+						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 4 } ]}>
 							{item.title}
 						</Card.Title>
-						<Card.Title style={{ flex: 2 }}>
+						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 2 } ]}>
 							{Utils.niceTime(displayDate)}
 						</Card.Title>
 						<Switch
 							value={item.active}
 							onValueChange={value => handleUpdateReminder({ ...item, active: value })}
-							style={{ flex: 1 }}
+							style={[ _Styles[theme].switchStyle, { flex: 1 } ]}
+							color={_Colors[theme].bubbleText}
 						/>
 					</View>
 					<View style={{ flexDirection: 'row' }}>
-						{item.body}
+						<Text style={_Styles[theme].cardBodyText}>{item.body}</Text>
 					</View>
 				</Card>
 			</Pressable>

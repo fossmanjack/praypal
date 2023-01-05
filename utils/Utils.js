@@ -18,6 +18,9 @@ export const collisionCheck = (a, b) => parseName(a) === parseName(b);
 
 export const getBlurHashString = theme => {
 	switch(theme) {
+		case 'dark':
+			return '|14Bk4AC57^6S~SLwJEfxaR*j[s:S2WBsoW;ayn%0y-B=|9[rrsUOX$*NG$*WVNGxGt7NanjoLW;^QNaEL$jkWbHniNGxaI:oLxaNaRjxGbbWVniI:oLxaW:WBWBs:s:R*xaWVRjsos:S1e.oLX8j[j[ayWUoLoLS2ayso';
+			break;
 		default:
 			return 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
 	}

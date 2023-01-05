@@ -10,9 +10,11 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Card } from '@rneui/themed';
 import PrayerEditDialog from '../dialogs/PrayerEditDialog';
+import { _Styles } from '../assets/_Styles';
 
 export default function ListScreen() {
 	const { _Prayers } = useSelector(S => S.prayer);
+	const { theme } = useSelector(S => S.options);
 	const [ editPrayer, setEditPrayer ] = useState(
 		{
 			id: 'blank',
@@ -38,17 +40,17 @@ export default function ListScreen() {
 					toggleEditVisible(true);
 				}}
 			>
-				<Card containerStyle={styles.cardActive}>
-					<View style={{ flexDirection: 'row' }}>
-						<Card.Title style={{ flex: 4 }}>
+				<Card containerStyle={_Styles[theme].cardActive}>
+					<View style={_Styles[theme].cardTitle}>
+						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 4 } ]}>
 							{title}
 						</Card.Title>
-						<Card.Title style={{ flex: 4 }}>
+						<Card.Title style={[ _Styles[theme].cardBodyText, { flex: 4 } ]}>
 							{expText}
 						</Card.Title>
 					</View>
 					<View style={{ flexDirection: 'row' }}>
-						<Text>{body}</Text>
+						<Text style={_Styles[theme].cardBodyText}>{body}</Text>
 					</View>
 				</Card>
 			</Pressable>

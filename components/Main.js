@@ -7,7 +7,6 @@
 import { useState } from 'react';
 import {
 	Modal,
-	StyleSheet,
 	Text,
 	TextInput,
 	View
@@ -21,19 +20,18 @@ import { Button, Icon } from '@rneui/themed';
 import { Blurhash } from 'react-native-blurhash';
 
 // Screens
-import BookScreen from './screens/BookScreen';
-import ListScreen from './screens/ListScreen';
-import ReminderScreen from './screens/ReminderScreen';
-import DevScreen from './screens/DevScreen';
+import BookScreen from '../screens/BookScreen';
+import ListScreen from '../screens/ListScreen';
+import ReminderScreen from '../screens/ReminderScreen';
+import DevScreen from '../screens/DevScreen';
 
 // Assets and utils
-import _Styles from '../assets/_Styles';
-import * as CONSTANTS from '../data/CONSTANTS';
-import * as UTILS from '../utils/Utils';
-import { PRAYERS } from './data/PRAYERS';
-import SpeedDialOverlay from './components/SpeedDialOverlay';
-import Loading from './components/Loading';
-import OptionsModal from './dialogs/OptionsModal';
+import { _Styles } from '../assets/_Styles';
+import { COLORS } from '../data/CONSTANTS';
+import * as Utils from '../utils/Utils';
+import SpeedDialOverlay from '../components/SpeedDialOverlay';
+import Loading from '../components/Loading';
+import OptionsModal from '../dialogs/OptionsModal';
 
 
 /*
@@ -51,8 +49,8 @@ export default function Main(props) {
 	const Header = props => {
 
 		return (
-			<View style={styles.header}>
-				<Text>PrayPal: {props.title}</Text>
+			<View style={_Styles[theme].header}>
+				<Text style={_Styles[theme].headerText}>PrayPal: {props.title}</Text>
 			</View>
 		);
 	}
@@ -66,8 +64,10 @@ export default function Main(props) {
 				type='outline'
 				icon={{
 					name: 'options-outline',
-					type: 'ionicon'
+					type: 'ionicon',
+					color: COLORS[theme].headerText,
 				}}
+				buttonStyle={_Styles[theme].headerButton}
 			/>
 		);
 	}
@@ -121,8 +121,11 @@ export default function Main(props) {
 								/>
 							);
 						},
-						tabBarActiveTintColor: 'tomato',
-						tabBarInactiveTintColor: 'gray',
+						tabBarActiveTintColor: COLORS[theme].buttonActiveText,
+						tabBarInactiveTintColor: COLORS[theme].buttonInactiveText,
+						tabBarActiveBackgroundColor: COLORS[theme].tabActiveBackground,
+						tabBarInactiveBackgroundColor: COLORS[theme].tabInactiveBackground,
+						tabBarShowLabel: false,
 					})}
 				>
 					<Tab.Screen
@@ -130,8 +133,9 @@ export default function Main(props) {
 						component={BookScreen}
 						options={{
 							title: '',
-							headerTitle: props => <Header title='Prayer Book' />,
+							headerTitle: props => <Header style={_Styles[theme].header} title='Prayer Book' />,
 							headerRight: _ => <OptionsButton />,
+							headerStyle: _Styles[theme].header,
 						}}
 					/>
 					<Tab.Screen
@@ -141,6 +145,7 @@ export default function Main(props) {
 							title: '',
 							headerTitle: props => <Header title='Prayer List' />,
 							headerRight: _ => <OptionsButton />,
+							headerStyle: _Styles[theme].header,
 						}}
 					/>
 					<Tab.Screen
@@ -150,6 +155,7 @@ export default function Main(props) {
 							title: '',
 							headerTitle: props => <Header title='Reminders' />,
 							headerRight: _ => <OptionsButton />,
+							headerStyle: _Styles[theme].header,
 						}}
 					/>
 					{ devMode && (
@@ -160,6 +166,7 @@ export default function Main(props) {
 								title: '',
 								headerTitle: props => <Header title='Dev Options' />,
 								headerRight: _ => <OptionsButton />,
+								headerStyle: _Styles[theme].header,
 							}}
 						/>
 					)}
