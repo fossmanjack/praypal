@@ -21,20 +21,17 @@ import { _Styles, _Colors } from '../assets/_Styles';
 
 // AccordionListItem is the first tier of accordions.  There is one for each
 // category/tag, plus the top "Favorites" item.  Props are as follows:
-// - item (String) -- one of the tags extracted in main function
-// - _Book -- relevantPrayers
-// - _Favorites -- extracted directly from Redux state and handed down
-// - toggleFavorite -- function handed down for toggling favorites
-// - theme -- app theme, handed down because useSelector is picky
 const AccordionListItem = (props) => {
 	const {
-		item = '',
-		prayers,
-		_Favorites,
-		toggleFavorite,
-		theme
+		item = '', 						// String -- one of the tags extracted in main
+		prayers, 						// relevantPrayers from main
+		_Favorites, 					// _Favorites from Redux state
+		toggleFavorite, 				// function handed down from main
+		theme 							// string from Redux state
 	} = props;
 	const [ expanded, setExpanded ] = useState(false);
+
+	//console.log('AccordionListItem\n\t', item, '\n\t', _Favorites);
 
 	return (
 		<ListItem.Accordion
@@ -52,7 +49,11 @@ const AccordionListItem = (props) => {
 			}
 			containerStyle={{ backgroundColor: _Colors[theme].bubbleTop }}
 			isExpanded={expanded}
-			onPress={_ => setExpanded(!expanded)}
+			onPress={_ => {
+				setExpanded(!expanded)
+				//console.log('AccordionListItem expanding', item, '...');
+				//console.log(prayers);
+			}}
 			icon={
 				<Icon
 					name='chevron-down-outline'
@@ -65,15 +66,17 @@ const AccordionListItem = (props) => {
 				Object.keys(prayers)
 					// p is a prayerID
 					// filter out prayers that do not have this specific tag
-					.filter(p => prayers[p].tags.includes(item))
+					.filter(p => item === 'Favorites' || prayers[p].tags.includes(item))
 					// p is, again, a prayerID
 					.map((p, i) => {
+						console.log('AccordionPrayerItem', item, 'rendering', p, '...');
+
 						return (
 							<AccordionPrayerItem
 								item={p}
 								prayers={prayers}
 								_Favorites={_Favorites}
-								key={`${item}-${p.title}`}
+								key={`${item}-${p}`}
 								toggleFavorite={toggleFavorite}
 								theme={theme}
 							/>
@@ -167,7 +170,6 @@ const AccordionPrayerItem = (props) => {
 	);
 }
 
-
 export default function BookScreen() {
 	const { language = 'en', denomination = 'universal', theme = 'dark' } = useSelector(S => S.options);
 	const { _Book, _Favorites } = useSelector(S => S.prayer);
@@ -197,7 +199,7 @@ export default function BookScreen() {
 	// extracted in categories, above.
 	const renderMain = (data, rowMap) => {
 		const { item } = data;
-		console.log(`BookScreen renderMain item: ${item}`);
+		//console.log(`BookScreen renderMain item: ${item}`);
 
 		return <AccordionListItem
 			item={item}
@@ -209,6 +211,21 @@ export default function BookScreen() {
 		/>;
 	}
 
+	const Favorites = _ => {
+		console.log('Rendering Favorites with', _Favorites);
+
+		return (
+			<AccordionListItem
+				item='Favorites'
+				prayers={_Favorites}
+				_Favorites={_Favorites}
+				toggleFavorite={toggleFavorite}
+				key='Favorites'
+				theme={theme}
+			/>
+		);
+	}
+
 	// Needed for debugging, won't be needed in production code
 	const dumpFavorites = _ => {
 		console.log('Dumping favorites...\n', _Favorites);
@@ -218,23 +235,12 @@ export default function BookScreen() {
 	// FlatList calls renderMain above and should have a "Favorites"
 	// AccordionListItem at its top
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<FlatList
-				data={categories}
-				renderItem={renderMain}
-				keyGenerator={item => item}
-				listHeaderComponent={
-					<AccordionListItem
-						item='Favorites'
-						prayers={_Favorites}
-						_Favorites={_Favorites}
-						toggleFavorite={toggleFavorite}
-						key={item}
-						theme={theme}
-					/>
-				}
-			/>
-		</SafeAreaView>
+		<FlatList
+			data={categories}
+			renderItem={renderMain}
+			keyGenerator={item => item}
+			ListHeaderComponent={<Favorites />}
+		/>
 	);
 
 }

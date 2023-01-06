@@ -9,9 +9,9 @@
 - [x] Edit reminder
 - [x] Move everything to Main screen so as to have access to useSelector
 - [x] Change prayerbook to new format
-- [ ] Headers
+- [x] Headers
 - [ ] Options dialog
-- [ ] Favorite prayerbook prayers
+- [x] Favorite prayerbook prayers
 - [ ] Virtue tracker
 - [ ] Background fetch data files
 

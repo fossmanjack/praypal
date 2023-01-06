@@ -13,7 +13,7 @@ export const _Colors = {
 		headerText: '#f0b746',
 		prayerBackground: '#002643',
 		prayerText: '#f48cba',
-		SDOButton: '#000e19',
+		SDOButton: '#002643',
 		switchTrack: '#808080',
 		tabActiveBackground: '#002643',
 		tabInactiveBackground: '#000e19',
