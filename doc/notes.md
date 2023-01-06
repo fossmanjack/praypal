@@ -12,8 +12,19 @@
 - [x] Headers
 - [ ] Options dialog
 - [x] Favorite prayerbook prayers
-- [ ] Virtue tracker
 - [ ] Background fetch data files
+- [ ] Swipe to move screens?  Maybe?
+
+### Morals Tracker
+
+- [ ] Page
+- [ ] Buttons
+- [ ] Badges
+- [ ] Add virtue/vice
+- [ ] Edit virtue/vice incl. count
+- [ ] Daily bar graph
+- [ ] Over-time line graph
+- [ ] Import/export
 
 ### Future additions
 
@@ -57,3 +68,36 @@ still be a pure function but since notif IDs are unique, creating a bunch of not
 with the same ID shouldn't hurt anything.
 
 The test worked.  So.
+
+### Virtue/Vice Tracker
+
+A series of badges, buttons, that you click, that logs each click with a timestamp,
+and ideally with a moon phase, weather, location, so on, but what's the point of
+collecting all that data if we're not going to plot it out?  Maybe we could, but eh.
+Each click increments the icon badge, reset at midnight or maybe set the day in a
+drop-down at the top of the screen.  Actually yeah.  Click the date to set it,
+left/right to increment/decrement.  Click one of the buttons and a new day entry
+is created in the database (JSON object).  Eventually be able to do a line graph
+of progress either individually or as good/bad categories.
+
+Create different sets for Orthodox, Catholic, Paladin, maybe Druid and Asatru, or
+hell, maybe just add a few presets and let people create their own.
+
+_Tracker = {
+	virtues: [ virtue1 ... virtuex ],
+	virtues: {
+		[virtue1]: { name: string, color: string }, // same for vices
+	vices: [ vice1 ... vicex ],
+	history: {
+		[date]: {
+			[virtue]: int,
+			[virtue]: int,
+			[vice]: int
+		}
+	}
+}
+
+Then for a given day, retrieve the virtues array and render all the buttons, adding
+a badge if there's an entry in the date for that day.  Do the same for vices, and
+have a "new virtue" and "new vice" button in the headers or somewhere.  Can
+probably use something like the DayChip that I wrote up but didn't end up using.

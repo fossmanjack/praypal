@@ -1,6 +1,9 @@
 // Converts toLocaleTimeString() output to HH:mm
 export const niceTime = d => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).split(':').slice(0, 2).join(':');
 
+// Capitalizes a string
+export const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
 // Strips forbidden characters from a string
 export const sanitize = str => str ? str.replace(/[~!@#$%^&*().,<>?_=+:;\'\"\/\-\[\]\{\}\\\|\`]/g, '') : false;
 

@@ -26,8 +26,8 @@ import ReminderScreen from '../screens/ReminderScreen';
 import DevScreen from '../screens/DevScreen';
 
 // Assets and utils
-import { _Styles } from '../assets/_Styles';
-import { COLORS } from '../data/CONSTANTS';
+import { _Styles, _Colors } from '../assets/_Styles';
+//import { COLORS } from '../data/CONSTANTS';
 import * as Utils from '../utils/Utils';
 import SpeedDialOverlay from '../components/SpeedDialOverlay';
 import Loading from '../components/Loading';
@@ -65,7 +65,7 @@ export default function Main(props) {
 				icon={{
 					name: 'options-outline',
 					type: 'ionicon',
-					color: COLORS[theme].headerText,
+					color: _Colors[theme].headerText,
 				}}
 				buttonStyle={_Styles[theme].headerButton}
 			/>
@@ -121,10 +121,10 @@ export default function Main(props) {
 								/>
 							);
 						},
-						tabBarActiveTintColor: COLORS[theme].buttonActiveText,
-						tabBarInactiveTintColor: COLORS[theme].buttonInactiveText,
-						tabBarActiveBackgroundColor: COLORS[theme].tabActiveBackground,
-						tabBarInactiveBackgroundColor: COLORS[theme].tabInactiveBackground,
+						tabBarActiveTintColor: _Colors[theme].buttonActiveText,
+						tabBarInactiveTintColor: _Colors[theme].buttonInactiveText,
+						tabBarActiveBackgroundColor: _Colors[theme].tabActiveBackground,
+						tabBarInactiveBackgroundColor: _Colors[theme].tabInactiveBackground,
 						tabBarShowLabel: false,
 					})}
 				>

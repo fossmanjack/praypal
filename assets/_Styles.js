@@ -14,6 +14,7 @@ export const _Colors = {
 		prayerBackground: '#002643',
 		prayerText: '#f48cba',
 		SDOButton: '#002643',
+		subtitleText: '#fff468',
 		switchTrack: '#808080',
 		tabActiveBackground: '#002643',
 		tabInactiveBackground: '#000e19',
@@ -42,6 +43,11 @@ export const _Styles = StyleSheet.create({
 			width: '100%',
 			height: '100%'
 		},
+		backgroundImage: {
+			...StyleSheet.absoluteFill,
+			width: '100%',
+			height: '100%',
+		},
 		cardActive: {
 			backgroundColor: _Colors.dark.bubbleTop,
 			borderRadius: 15,
@@ -54,6 +60,9 @@ export const _Styles = StyleSheet.create({
 		cardInactive: {
 
 			borderRadius: 15,
+		},
+		cardSubtitleText: {
+			color: _Colors.dark.subtitleText,
 		},
 		cardTitle: {
 			flexDirection: 'row',

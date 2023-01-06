@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	FlatList,
 	Pressable,
@@ -171,23 +171,73 @@ const AccordionPrayerItem = (props) => {
 }
 
 export default function BookScreen() {
-	const { language = 'en', denomination = 'universal', theme = 'dark' } = useSelector(S => S.options);
+	const { language = [ 'en' ], denomination = [ 'universal' ], theme = 'dark' } = useSelector(S => S.options);
 	const { _Book, _Favorites } = useSelector(S => S.prayer);
 	const dispatch = useDispatch();
 	const fvTitle = 'Favorites';
 
 	// We want both the denom-specific and the universal prayers to be a part of the prayer set
 	// relevantPrayers = { prayerID: { ...prayerOb }, prayerID: { ...prayerOb } }
-	const relevantPrayers = { ..._Book[language][denomination], ..._Book[language].universal };
+	//const relevantPrayers = { ..._Book[language][denomination], ..._Book[language].universal };
+	//
+	// prayers is a flat object derived from the _Book based on language and denomination selections
+	// It should be a series of { prayerID: { title, body, tags }, prayerID: { title, body, tags }}
+	const [ prayers, setPrayers ] = useState({});
+
+	// categories is an array of unique tags derived from the prayers object
+	const [ categories, setCategories ] = useState([]);
+
+	const appendPrayers = addPrayers => {
+		console.log('appendPrayers called\n\tadding:', addPrayers, '\n\tto:', prayers);
+		let out = { ...prayers, ...addPrayers };
+		console.log('out:', out);
+		setPrayers(out);
+	}
+
+	const getPrayers = (l, d) => _Book[l][d] || {};
+
+	useEffect(_ => { console.log('>>> prayers changed, now', prayers); }, [ prayers ]);
+
+	useEffect(_ => {
+		setPrayers({});
+		console.log('Generating prayers object...');
+		language.forEach(l => denomination.forEach(d => appendPrayers(getPrayers(l, d))));
+/*
+		console.log('BookScreen useEffect working with _Book', _Book);
+		language.forEach(l => {
+			console.log('BookScreen useEffect checking', l, '\n\t', _Book[l], '...');
+			denomination.forEach(d => {
+				console.log('BookScreen useEffect checking', d, '\n\t', _Book[l][d], '...');
+				appendPrayers(_Book[l][d]);
+				console.log('prayers is', prayers);
+			});
+		});
+		console.log('Done checking, found', prayers);
+*/
+		console.log('Done, found', prayers);
+	}, [ language, denomination ]);
 
 	// Here we're getting all the tags in the relevantPrayers and making sure they're unique
 	// Could have done this other ways, e.g. using a Set, but this works well enough
-	const categories = Object.keys(relevantPrayers).reduce((acc, p) => {
-		relevantPrayers[p].tags.forEach(t => {
+	useEffect(_ => {
+		setCategories(Object.keys(prayers).reduce((acc, p) => {
+			prayers[p].tags.forEach(t => {
+				if(!acc.includes(t)) acc.push(t);
+			});
+			return acc;
+		}, []).sort((a, b) => a - b));
+	}, [ prayers ]);
+
+/*
+	// Here we're getting all the tags in the relevantPrayers and making sure they're unique
+	// Could have done this other ways, e.g. using a Set, but this works well enough
+	const categories = Object.keys(prayers).reduce((acc, p) => {
+		prayers[p].tags.forEach(t => {
 			if(!acc.find(tag => tag === t)) acc.push(t);
 		});
 		return acc;
 	}, []).sort((a, b) => a - b);
+*/
 
 	// For toggling favorites.  Should probably move to <AccordionPrayerItem>, eh, but
 	// then we'd have to hand dispatch down instead of this function so w/e
@@ -203,7 +253,7 @@ export default function BookScreen() {
 
 		return <AccordionListItem
 			item={item}
-			prayers={relevantPrayers}
+			prayers={prayers}
 			_Favorites={_Favorites}
 			toggleFavorite={toggleFavorite}
 			key={item}
