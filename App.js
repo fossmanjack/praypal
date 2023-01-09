@@ -27,19 +27,79 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Loading from './components/Loading';
 //import OptionsModal from './dialogs/OptionsModal';
 import Main from './components/Main';
+import { VERSION, FETCHURL } from './data/CONSTANTS';
+import { replacePrayerBook, updatePrayerBookVersion } from './slices/prayerSlice';
+import { createAndroidReminder } from './slices/reminderSlice';
 
 //const Tab = createBottomTabNavigator();
 //const blurHashString = 'eRE#,ia~7jW=aiO@fQrZfjXN2zaz,+oJ$dz;j?O=a#rxtifkv~fPF3';
 
 export default function App() {
 //	const [ optionsVisible, toggleOptionsVisible ] = useState(false);
+	const dispatch = _Store.dispatch;
 
+	// Ensure all active reminders are "in the system" by re-adding them by
+	// ID.  With Notifee adding a reminder with an existing ID just updates
+	// that reminder.
 	const restoreTriggers = async _ => {
 		console.log('Restoring triggers...');
+		const rems = _Store.getState().reminder._Reminders;
+		// _Reminders is an array of reminder objects
+		rems.forEach(r => {
+			const { id, title, body, hour, minute, active } = r;
+
+			if(active) {
+				const triggerTime = new Date(Date.now());
+				triggerTime.setHours(hour, minute, 0);
+
+				createAndroidReminder({
+					id,
+					title,
+					body,
+					triggerTime,
+					repeatFrequency: 1
+				});
+			}
+		});
 	};
 
+	// Fetch prayer book JSON from p3soft servers
 	const updatePrayers = async _ => {
+		/*
 		console.log('Updating prayers...');
+		const vData = await fetch(FETCHURL + 'VERSIONS.json');
+		console.log('Received vData', vData);
+		//const vJson = await vData.json();
+		const vJson = await JSON.parse(vData.json());
+		console.log('Got vData JSON', vJson);
+		//const versions = await JSON.parse(vJson);
+		//console.log('Parsed versions', versions);
+
+		const pVersion = versions[VERSION];
+		console.log('Found prayer version', pVersion);
+		*/
+		// Fetches a JSON containing the current prayer book version for each
+		// app version.  If the current prayer book version is newer than the
+		// stored version, fetch and update both.
+
+		//console.log('Updating prayers...');
+		fetch(FETCHURL + 'VERSIONS.json')
+			.then(response => response.json())
+			.then(data => {
+				const newVer = data[VERSION];
+				if(newVer && _Store.getState().prayer._BookVersion < newVer) {
+					fetch(FETCHURL + `PRAYERS_${VERSION}.json`)
+						.then(response => response.json())
+						.then(data => {
+							console.log('New prayer data:', data);
+							dispatch(replacePrayerBook(data));
+							dispatch(updatePrayerBookVersion(newVer));
+						});
+				}
+			})
+			.catch(err => {
+				console.log('ERROR: Fetch failed!', err);
+			});
 	};
 /*
 

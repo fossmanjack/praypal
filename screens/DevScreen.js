@@ -183,6 +183,14 @@ export default function DevScreen(props) {
 				/>
 			</Card>
 			<Card style={styles.card}>
+				<Text>Dump Prayer Book</Text>
+				<Button
+					title='Dump'
+					buttonStyle={styles.button}
+					onPress={_ => console.log('Dump prayer book...\n', _Store.getState().prayer._Book)}
+				/>
+			</Card>
+			<Card style={styles.card}>
 				<Text>Hourly Test Notification</Text>
 				<Switch
 					value={testReminder}

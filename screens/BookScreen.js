@@ -32,6 +32,7 @@ const AccordionListItem = (props) => {
 	const [ expanded, setExpanded ] = useState(false);
 
 	//console.log('AccordionListItem\n\t', item, '\n\t', _Favorites);
+	//console.log('AccordionListItem for', item);
 
 	return (
 		<ListItem.Accordion
@@ -69,7 +70,7 @@ const AccordionListItem = (props) => {
 					.filter(p => item === 'Favorites' || prayers[p].tags.includes(item))
 					// p is, again, a prayerID
 					.map((p, i) => {
-						console.log('AccordionPrayerItem', item, 'rendering', p, '...');
+						//console.log('AccordionPrayerItem', item, 'rendering', p, '...');
 
 						return (
 							<AccordionPrayerItem
@@ -100,7 +101,7 @@ const AccordionPrayerItem = (props) => {
 		toggleFavorite
 	} = props;
 
-	console.log('AccordionPrayerItem:', props);
+	//console.log('AccordionPrayerItem:', props);
 
 	return (
 		<ListItem.Accordion
@@ -137,7 +138,7 @@ const AccordionPrayerItem = (props) => {
 			isExpanded={expanded}
 			onPress={_ => {
 				setExpanded(!expanded);
-				console.log('AccordionPrayerItem expanding with text', prayers[item].body);
+				//console.log('AccordionPrayerItem expanding with text', prayers[item].body);
 			}}
 			icon={
 				<Icon
@@ -187,21 +188,40 @@ export default function BookScreen() {
 	// categories is an array of unique tags derived from the prayers object
 	const [ categories, setCategories ] = useState([]);
 
+/*
 	const appendPrayers = addPrayers => {
-		console.log('appendPrayers called\n\tadding:', addPrayers, '\n\tto:', prayers);
+		console.log('appendPrayers called\n\tadding:', Object.keys(addPrayers), '\n\tto:', Object.keys(prayers));
 		let out = { ...prayers, ...addPrayers };
-		console.log('out:', out);
+		console.log('out:', Object.keys(out));
 		setPrayers(out);
 	}
+*/
 
 	const getPrayers = (l, d) => _Book[l][d] || {};
+	/*
+	const getPrayers = (l, d) => {
+		const out = _Book[l][d] || {};
 
-	useEffect(_ => { console.log('>>> prayers changed, now', prayers); }, [ prayers ]);
+		console.log(`Found the following for ${l}:${d}: ${Object.keys(out)}`);
+		return out;
+	}
+	*/
+
+	//useEffect(_ => { console.log('>>> prayers changed, now', Object.keys(prayers)); }, [ prayers ]);
 
 	useEffect(_ => {
-		setPrayers({});
-		console.log('Generating prayers object...');
-		language.forEach(l => denomination.forEach(d => appendPrayers(getPrayers(l, d))));
+		//setPrayers({});
+		let outPrayers = {};
+		//console.log('Generating prayers object...');
+		//language.forEach(l => denomination.forEach(d => appendPrayers(getPrayers(l, d))));
+		language.forEach(l => {
+			denomination.forEach(d => {
+				outPrayers = { ...outPrayers, ...getPrayers(l, d) };
+			})
+		});
+
+		//console.log('Got outPrayers:', Object.keys(outPrayers));
+
 /*
 		console.log('BookScreen useEffect working with _Book', _Book);
 		language.forEach(l => {
@@ -214,18 +234,23 @@ export default function BookScreen() {
 		});
 		console.log('Done checking, found', prayers);
 */
-		console.log('Done, found', prayers);
-	}, [ language, denomination ]);
+		setPrayers(outPrayers);
+		//console.log('Done, found', Object.keys(prayers));
+	}, [ language, denomination, _Book ]);
 
 	// Here we're getting all the tags in the relevantPrayers and making sure they're unique
 	// Could have done this other ways, e.g. using a Set, but this works well enough
 	useEffect(_ => {
 		setCategories(Object.keys(prayers).reduce((acc, p) => {
+		//const cats = Object.keys(prayers).reduce((acc, p) => {
 			prayers[p].tags.forEach(t => {
 				if(!acc.includes(t)) acc.push(t);
 			});
 			return acc;
-		}, []).sort((a, b) => a - b));
+		}, []).sort((a, b) => a > b ? 1 : a < b ? -1 : 0));
+		//}, []).sort((a, b) => a > b ? 1 : a < b ? -1 : 0);
+		//console.log('useEffect categories updated with', cats);
+		//setCategories(cats);
 	}, [ prayers ]);
 
 /*
@@ -262,7 +287,7 @@ export default function BookScreen() {
 	}
 
 	const Favorites = _ => {
-		console.log('Rendering Favorites with', _Favorites);
+		//console.log('Rendering Favorites with', _Favorites);
 
 		return (
 			<AccordionListItem

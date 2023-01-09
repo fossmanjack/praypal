@@ -57,13 +57,16 @@ const prayerSlice = createSlice({
 		},
 		replacePrayerBook: (pState, action) => {
 			// Expects a new _Prayers object as action payload
+			if(typeof action.payload !== 'object') return pState;
+			console.log('replacePrayerBook with', action.payload);
 			return {
 				...pState,
-				_Book: [ ...action.payload ]
+				_Book: { ...action.payload }
 			}
 		},
 		updatePrayerBookVersion: (pState, action) => {
 			// expects an integer containing the new version as payload
+			console.log('updatePrayerBookVersion to', action.payload);
 			return {
 				...pState,
 				_BookVersion: action.payload

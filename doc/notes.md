@@ -10,9 +10,9 @@
 - [x] Move everything to Main screen so as to have access to useSelector
 - [x] Change prayerbook to new format
 - [x] Headers
-- [ ] Options dialog
+- [x] Options dialog
 - [x] Favorite prayerbook prayers
-- [ ] Background fetch data files
+- [x] Background fetch data files
 - [ ] Swipe to move screens?  Maybe?
 
 ### Morals Tracker

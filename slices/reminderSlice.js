@@ -74,11 +74,11 @@ export const createNewReminder = (date = new Date(Date.now())) => {
 
 export const createAndroidReminder = async props => {
 	const {
-		id = uuid.v4(),
-		title,
-		body,
-		triggerTime,
-		repeatFrequency = notifee.RepeatFrequency.NONE,
+		id = uuid.v4(), 					// string
+		title, 								// string
+		body, 								// string
+		triggerTime, 						// Date ob
+		repeatFrequency = notifee.RepeatFrequency.NONE, // int
 	} = props;
 
 	while(triggerTime.getTime() < Date.now())

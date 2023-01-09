@@ -31,7 +31,8 @@ export default function ListScreen() {
 	const renderItem = (data, rowMap) => {
 		const { item: { title, body, expires, expireDate }} = data;
 		const expDate = new Date(expireDate);
-		const expText = expires ? `Expires: ${expDate.toLocaleDateString()}` : '';
+		const expText = expires ? `Until ${expDate.toLocaleDateString()}` : '';
+		const expired = expires && expireDate < Date.now();
 
 		return (
 			<Pressable
@@ -40,7 +41,7 @@ export default function ListScreen() {
 					toggleEditVisible(true);
 				}}
 			>
-				<Card containerStyle={_Styles[theme].cardActive}>
+				<Card containerStyle={[ expired ? _Styles[theme].cardInactive : _Styles[theme].cardActive ]}>
 					<View style={_Styles[theme].cardTitle}>
 						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 4 } ]}>
 							{title}
@@ -61,7 +62,12 @@ export default function ListScreen() {
 		<>
 			<SafeAreaView>
 				<FlatList
-					data={_Prayers}
+					data={[ ..._Prayers ].sort((a, b) => {
+						if(a.expires && a.expireDate < Date.now()) return 1;
+						if(b.expires && b.expireDate < Date.now()) return -1;
+
+						return 0;
+					})}
 					keyExtractor={data => {
 						console.log('Extracting key...');
 						console.log(data);
