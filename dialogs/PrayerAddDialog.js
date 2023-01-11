@@ -5,13 +5,15 @@ import {
 	View
 } from 'react-native';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import uuid from 'react-native-uuid';
 import * as Prayer from '../slices/prayerSlice';
+import { _Styles, _Colors } from '../assets/_Styles';
 
 export default function PrayerAddDialog(props) {
 	const { visible, toggleVisible } = props;
+	const { theme } = useSelector(S => S.options);
 	const [ title, setTitle ] = useState('');
 	const [ body, setBody ] = useState('');
 	const [ expires, setExpires ] = useState(false);
@@ -58,35 +60,37 @@ export default function PrayerAddDialog(props) {
 		<Dialog
 			isVisible={visible}
 			onBackdropPress={_ => toggleVisible(false)}
+			overlayStyle={_Styles[theme].cardActive}
 		>
-			<Dialog.Title title='Pray for...' />
+			<Dialog.Title title='Pray for...' titleStyle={_Styles[theme].headerText} />
 			<TextInput
 				placeholder='Pray for ...'
 				value={title}
 				onChangeText={text => setTitle(text)}
-				style={{
-					padding: 10,
-						borderWidth: 1,
-				}}
+				style={_Styles[theme].textInput}
+				placeholderTextColor={_Colors[theme].subtitleText}
 			/>
-			{ errorText && <Text>{errorText}</Text> }
+			{ errorText && <Text style={{ color: 'red' }}>{errorText}</Text> }
 			<TextInput
 				multiline={true}
 				numberOfLines={4}
 				placeholder='Notes ...'
 				value={body}
 				onChangeText={text => setBody(text)}
-				style={{
-					padding: 10,
-					borderWidth: 1,
-				}}
+				style={[ _Styles[theme].textInput, { marginTop: 10 } ]}
+				placeholderTextColor={_Colors[theme].subtitleText}
 			/>
-			<View style={{ flexDirection: 'row' }}>
-				<Text>Expires?</Text>
+			<View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+				<Text style={[ _Styles[theme].headerText, { marginRight: 'auto' } ]}>Expires?</Text>
 				<Button
 					title={expires ? expireDate.toLocaleDateString() : 'Set'}
 					onPress={showDatePicker}
 					key={expireDate}
+					buttonStyle={{
+						borderRadius: 10,
+					}}
+					color={_Colors[theme].buttonHighlightBackground}
+					titleStyle={{ color: _Colors[theme].buttonHighlightText }}
 				/>
 			</View>
 			<Dialog.Actions>
@@ -99,6 +103,7 @@ export default function PrayerAddDialog(props) {
 							handleSubmitPrayer();
 						}
 					}}
+					titleStyle={_Styles[theme].buttonDialogText}
 				/>
 				<Dialog.Button
 					title='Cancel'
@@ -106,6 +111,7 @@ export default function PrayerAddDialog(props) {
 						resetState();
 						toggleVisible(!visible);
 					}}
+					titleStyle={_Styles[theme].buttonDialogText}
 				/>
 			</Dialog.Actions>
 		</Dialog>

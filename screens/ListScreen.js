@@ -1,5 +1,6 @@
 import {
 	FlatList,
+	ImageBackground,
 	Pressable,
 	SafeAreaView,
 	StyleSheet,
@@ -43,15 +44,15 @@ export default function ListScreen() {
 			>
 				<Card containerStyle={[ expired ? _Styles[theme].cardInactive : _Styles[theme].cardActive ]}>
 					<View style={_Styles[theme].cardTitle}>
-						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 4 } ]}>
+						<Card.Title style={[ expired ? _Styles[theme].cardInactiveTitleText : _Styles[theme].cardActiveTitleText, { flex: 4 } ]}>
 							{title}
 						</Card.Title>
-						<Card.Title style={[ _Styles[theme].cardBodyText, { flex: 4 } ]}>
+						<Card.Title style={[ expired ? _Styles[theme].cardInactiveSubtitleText : _Styles[theme].cardActiveSubtitleText, { flex: 4 } ]}>
 							{expText}
 						</Card.Title>
 					</View>
 					<View style={{ flexDirection: 'row' }}>
-						<Text style={_Styles[theme].cardBodyText}>{body}</Text>
+						<Text style={[ expired ? _Styles[theme].cardInactiveBodyText : _Styles[theme].cardActiveBodyText ]}>{body}</Text>
 					</View>
 				</Card>
 			</Pressable>

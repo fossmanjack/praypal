@@ -6,6 +6,7 @@
 // React Native imports
 import { useState } from 'react';
 import {
+	ImageBackground,
 	Modal,
 	Text,
 	TextInput,
@@ -27,23 +28,20 @@ import DevScreen from '../screens/DevScreen';
 
 // Assets and utils
 import { _Styles, _Colors } from '../assets/_Styles';
-//import { COLORS } from '../data/CONSTANTS';
 import * as Utils from '../utils/Utils';
 import SpeedDialOverlay from '../components/SpeedDialOverlay';
 import Loading from '../components/Loading';
 import OptionsModal from '../dialogs/OptionsModal';
-
-
-/*
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-*/
 
 const Tab = createBottomTabNavigator();
 
 export default function Main(props) {
 	const { theme, devMode } = useSelector(S => S.options);
 	const [ optionsVisible, toggleOptionsVisible ] = useState(false);
+
+	const backgroundImgSrc = theme === 'dark'
+		? require('../assets/img/themes/dark/background.png')
+		: require('../assets/img/themes/light/background.png');
 
 	// Used as the header for all screens
 	const Header = props => {
@@ -74,7 +72,8 @@ export default function Main(props) {
 
 	return (
 		<>
-			<Blurhash blurhash={Utils.getBlurHashString(theme)} style={_Styles[theme].backgroundBlurHash}/>
+		{/*<Blurhash blurhash={Utils.getBlurHashString(theme)} style={_Styles[theme].backgroundBlurHash}/>*/}
+			<ImageBackground source={backgroundImgSrc} style={_Styles[theme].backgroundImage} />
 			<NavigationContainer theme={navTheme}>
 				<Tab.Navigator
 					initialRouteName='List'
@@ -125,6 +124,7 @@ export default function Main(props) {
 						tabBarInactiveTintColor: _Colors[theme].buttonInactiveText,
 						tabBarActiveBackgroundColor: _Colors[theme].tabActiveBackground,
 						tabBarInactiveBackgroundColor: _Colors[theme].tabInactiveBackground,
+						tabBarStyle: _Styles[theme].tabBar,
 						tabBarShowLabel: false,
 					})}
 				>

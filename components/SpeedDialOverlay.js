@@ -49,6 +49,7 @@ export default function SpeedDialOverlay() {
 						color: _Colors[theme].buttonActiveText,
 					}}
 					title='Add prayer'
+					titleStyle={_Styles[theme].sdoActionButtonTitle}
 					onPress={_ => {
 						setSpeedDialOpen(!speedDialOpen);
 						showPrayerDialog(!prayerDialog);
@@ -62,6 +63,7 @@ export default function SpeedDialOverlay() {
 						color: _Colors[theme].buttonActiveText,
 					}}
 					title='Add reminder'
+					titleStyle={_Styles[theme].sdoActionButtonTitle}
 					onPress={_ => {
 						setSpeedDialOpen(!speedDialOpen);
 						showReminderDialog(!reminderDialog);

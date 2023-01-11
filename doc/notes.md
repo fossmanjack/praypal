@@ -15,6 +15,14 @@
 - [x] Background fetch data files
 - [ ] Swipe to move screens?  Maybe?
 
+### Pre-release
+
+- [ ] Fix colors on dialogs
+- [ ] FAB colors
+- [ ] Develop light theme
+- [ ] Background event handler for notifications
+- [ ] Fix icon
+
 ### Morals Tracker
 
 - [ ] Page

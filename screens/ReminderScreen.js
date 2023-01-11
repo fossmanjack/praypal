@@ -1,3 +1,10 @@
+// ReminderScreen.js
+// Displays notifications and allows user interaction
+// p3soft/JSP
+// 2022-12-08
+
+// React Native
+import { useState, useEffect } from 'react';
 import {
 	FlatList,
 	Pressable,
@@ -6,14 +13,17 @@ import {
 	Text,
 	View
 } from 'react-native';
-import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ListItem, Card, Switch } from '@rneui/themed';
-import * as Rem from '../slices/reminderSlice';
+
+// Community
 import notifee, { RepeatFrequency } from '@notifee/react-native';
+
+// Local
+import { _Styles, _Colors } from '../assets/_Styles';
+import * as Rem from '../slices/reminderSlice';
 import * as Utils from '../utils/Utils';
 import ReminderEditDialog from '../dialogs/ReminderEditDialog';
-import { _Styles, _Colors } from '../assets/_Styles';
 
 export default function ReminderScreen() {
 	const { _Reminders } = useSelector(S => S.reminder);
@@ -37,21 +47,21 @@ export default function ReminderScreen() {
 			>
 				<Card containerStyle={_Styles[theme].cardActive}>
 					<View style={_Styles[theme].cardTitle}>
-						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 4 } ]}>
+						<Card.Title style={[ _Styles[theme].cardActiveTitleText, { flex: 4 } ]}>
 							{item.title}
 						</Card.Title>
-						<Card.Title style={[ _Styles[theme].cardTitleText, { flex: 2 } ]}>
+						<Card.Title style={[ _Styles[theme].cardActiveSubtitleText, { flex: 2 } ]}>
 							{Utils.niceTime(displayDate)}
 						</Card.Title>
 						<Switch
 							value={item.active}
 							onValueChange={value => handleUpdateReminder({ ...item, active: value })}
 							style={[ _Styles[theme].switchStyle, { flex: 1 } ]}
-							color={_Colors[theme].bubbleText}
+							color={_Colors[theme].cardActiveBodyText}
 						/>
 					</View>
 					<View style={{ flexDirection: 'row' }}>
-						<Text style={_Styles[theme].cardBodyText}>{item.body}</Text>
+						<Text style={_Styles[theme].cardActiveBodyText}>{item.body}</Text>
 					</View>
 				</Card>
 			</Pressable>
@@ -88,43 +98,6 @@ export default function ReminderScreen() {
 			notifee.cancelNotification(id);
 	};
 
-/*
-		if(value) {
-			const triggerTime = new Date(Date.now());
-			triggerTime.setHours(hour, minute, 0);
-			if(triggerTime.getTime() < Date.now())
-				triggerTime.setDate(triggerTime.getDate() + 1);
-			dispatch(Rem.modifyReminder([ id, { active: true } ]));
-			Rem.createAndroidReminder({
-				id,
-				title,
-				body,
-				triggerTime,
-				repeatFrequency: RepeatFrequency.DAILY,
-			});
-		} else {
-			dispatch(Rem.modifyReminder([ id, { active: false } ]));
-			notifee.cancelNotification(id);
-		}
-	};
-*/
-
-
-/*
-	const handleUpdateReminder = ({ rid, data }) => {
-		console.log('handleUpdateReminder', rid, data);
-		dispatch(Rem.modifyReminder([ rid, data ]));
-		if(data.active) {
-			hardcodeRecurringReminder();
-		} else {
-			deleteRecurringReminder();
-		};
-		console.log('Showing all reminders...');
-		notifee.getTriggerNotifications().then(ids => console.log('All trigger notifications and IDs:', ids));
-		console.log('Done.');
-	}
-*/
-
 	return (
 		<>
 			<SafeAreaView>
@@ -145,24 +118,3 @@ export default function ReminderScreen() {
 		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	cardContainer: {
-		borderRadius: 15,
-	},
-});
-
-/*
-
-REMINDER NAME --- REMINDER TIME | Enabled slider
-REMINDER DAYS                   | Edit - Trash
-------------------------------------------------
-Accordion text
-
-*/

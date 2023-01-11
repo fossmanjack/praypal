@@ -2,19 +2,20 @@ import {
 	Button,
 	Chip,
 	Dialog
-} from 'react-native-elements';
+} from '@rneui/themed';
 import {
 	View,
 	Text,
 	TextInput
 } from 'react-native';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import notifee, { RepeatFrequency } from '@notifee/react-native';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import * as Rem from '../slices/reminderSlice';
 import * as Utils from '../utils/Utils';
 import uuid from 'react-native-uuid';
+import { _Styles, _Colors } from '../assets/_Styles';
 
 export default function ReminderAddDialog(props) {
 	const { visible, toggleVisible } = props;
@@ -23,6 +24,7 @@ export default function ReminderAddDialog(props) {
 	const [ triggerTime, setTriggerTime ] = useState(new Date(Date.now()));
 	const [ active, setActive ] = useState(false);
 	const [ errorText, setErrorText ] = useState('');
+	const { theme } = useSelector(S => S.options);
 	const dispatch = useDispatch();
 
 	const resetState = _ => {
@@ -76,35 +78,37 @@ export default function ReminderAddDialog(props) {
 		<Dialog
 			isVisible={visible}
 			onBackdropPress={dismissReminderAddDialog}
+			overlayStyle={_Styles[theme].cardActive}
 		>
-			<Dialog.Title title='Add Prayer Reminder' />
+			<Dialog.Title title='Add Prayer Reminder' titleStyle={_Styles[theme].headerText} />
 			<TextInput
 				placeholder='Remind me...'
 				value={title}
 				onChangeText={text => setTitle(text)}
-				style={{
-					padding: 10,
-						borderWidth: 1,
-				}}
+				style={_Styles[theme].textInput}
+				placeholderTextColor={_Colors[theme].subtitleText}
 			/>
-			{ errorText && <Text>{errorText}</Text> }
+			{ errorText && <Text style={{ color: 'red' }}>{errorText}</Text> }
 			<TextInput
 				multiline={true}
 				numberOfLines={4}
 				placeholder='Notes ...'
 				value={body}
 				onChangeText={text => setBody(text)}
-				style={{
-					padding: 10,
-					borderWidth: 1,
-				}}
+				style={[ _Styles[theme].textInput, { marginTop: 10 } ]}
+				placeholderTextColor={_Colors[theme].subtitleText}
 			/>
-			<View style={{ flexDirection: 'row' }}>
-				<Text>Set Time</Text>
+			<View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+				<Text style={[ _Styles[theme].headerText, { marginRight: 'auto' } ]}>Set Time</Text>
 				<Button
 					title={Utils.niceTime(triggerTime)}
 					onPress={showPicker}
 					key={triggerTime}
+					buttonStyle={{
+						borderRadius: 10,
+					}}
+					color={_Colors[theme].buttonHighlightBackground}
+					titleStyle={{ color: _Colors[theme].buttonHighlightText }}
 				/>
 			</View>
 			<Dialog.Actions>
@@ -117,10 +121,12 @@ export default function ReminderAddDialog(props) {
 							handleSubmitReminder();
 						}
 					}}
+					titleStyle={_Styles[theme].buttonDialogText}
 				/>
 				<Dialog.Button
 					title='Cancel'
 					onPress={dismissReminderAddDialog}
+					titleStyle={_Styles[theme].buttonDialogText}
 				/>
 			</Dialog.Actions>
 		</Dialog>

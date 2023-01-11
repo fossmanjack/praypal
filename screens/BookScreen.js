@@ -40,7 +40,7 @@ const AccordionListItem = (props) => {
 				<ListItem.Content>
 					<ListItem.Title
 						style={{
-							color: _Colors[theme].bubbleTitle,
+							color: _Colors[theme].cardActiveTitleText,
 							fontSize: 18
 						}}
 					>
@@ -48,7 +48,7 @@ const AccordionListItem = (props) => {
 					</ListItem.Title>
 				</ListItem.Content>
 			}
-			containerStyle={{ backgroundColor: _Colors[theme].bubbleTop }}
+			containerStyle={_Styles[theme].bookHeading}
 			isExpanded={expanded}
 			onPress={_ => {
 				setExpanded(!expanded)
@@ -106,7 +106,7 @@ const AccordionPrayerItem = (props) => {
 	return (
 		<ListItem.Accordion
 			style={styles.subHeading}
-			containerStyle={{ backgroundColor: _Colors[theme].bubbleTop }}
+			containerStyle={_Styles[theme].bookSubheading}
 			content={
 				<ListItem.Content
 					bottomDivider
@@ -126,7 +126,7 @@ const AccordionPrayerItem = (props) => {
 						<ListItem.Title
 							style={{
 								textAlign: 'center',
-								color: _Colors[theme].bubbleTitle,
+								color: _Colors[theme].bookSubheadingText,
 								fontSize: 16
 							}}
 						>
@@ -159,10 +159,10 @@ const AccordionPrayerItem = (props) => {
 			<ListItem.Content>
 				<Card containerStyle={{
 					marginTop: 0,
-					backgroundColor: _Colors[theme].prayerBackground,
-					borderWidth: 0
+					backgroundColor: _Colors[theme].bookBodyBackground,
+					borderWidth: 0,
 				}}>
-					<Text style={_Styles[theme].prayerText}>
+					<Text style={_Styles[theme].bookBodyText}>
 						{prayers[item].body}
 					</Text>
 				</Card>
