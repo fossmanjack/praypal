@@ -1,6 +1,8 @@
 import {
 	FlatList,
+	Image,
 	ImageBackground,
+	Linking,
 	Modal,
 	Pressable,
 	StyleSheet,
@@ -32,6 +34,7 @@ export default function OptionsModal(props) {
 	const backgroundImgSrc = theme === 'dark'
 		? require('../assets/img/themes/dark/background.png')
 		: require('../assets/img/themes/light/background.png');
+	const logoSrc = require('../assets/img/p3soft_logo_128.png');
 
 	const LANGS = Object.keys(_Book);
 	const DENOMS = [
@@ -194,36 +197,51 @@ export default function OptionsModal(props) {
 						About
 					</Card.Title>
 					<View style={{ flexDirection: 'row' }}>
-						<Text style={_Styles[theme].cardActiveSubtitleText}>
-							Version:
-						</Text>
-						<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
-							{CONSTANTS.VERSION}
-						</Text>
-					</View>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={_Styles[theme].cardActiveSubtitleText}>
-							Prayer Book Version:
-						</Text>
-						<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
-							{_BookVersion}
-						</Text>
-					</View>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={_Styles[theme].cardActiveSubtitleText}>
-							Contact:
-						</Text>
-						<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
-							praypal@p3soft.com
-						</Text>
-					</View>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={_Styles[theme].cardActiveSubtitleText}>
-							Web:
-						</Text>
-						<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
-							https://p3soft.com/praypal
-						</Text>
+						<Pressable onPress={_ => Linking.openURL('https://p3soft.com/praypal')}>
+							<Image
+								source={logoSrc}
+								style={{
+									borderWidth: 1,
+									borderRadius: 10,
+									borderColor: _Colors[theme].headerText,
+									marginRight: 10
+								}}
+							/>
+						</Pressable>
+						<View>
+							<View style={{ flexDirection: 'row' }}>
+								<Text style={_Styles[theme].cardActiveSubtitleText}>
+									Version:
+								</Text>
+								<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
+									{CONSTANTS.VERSION}
+								</Text>
+							</View>
+							<View style={{ flexDirection: 'row' }}>
+								<Text style={_Styles[theme].cardActiveSubtitleText}>
+									Prayer Book Version:
+								</Text>
+								<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
+									{_BookVersion}
+								</Text>
+							</View>
+							<View style={{ flexDirection: 'row' }}>
+								<Text style={_Styles[theme].cardActiveSubtitleText}>
+									Contact:
+								</Text>
+								<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
+									praypal@p3soft.com
+								</Text>
+							</View>
+							<View style={{ flexDirection: 'row' }}>
+								<Text style={_Styles[theme].cardActiveSubtitleText}>
+									Web:
+								</Text>
+								<Text style={[ _Styles[theme].cardActiveBodyText, { marginLeft: 4 } ]}>
+									https://p3soft.com/praypal
+								</Text>
+							</View>
+						</View>
 					</View>
 				</Card>
 			</Pressable>

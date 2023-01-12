@@ -1,4 +1,4 @@
-import { Button, Dialog } from '@rneui/themed';
+import { Button, Dialog, Switch } from '@rneui/themed';
 import {
 	Text,
 	TextInput,
@@ -18,6 +18,7 @@ export default function ReminderEditDialog(props) {
 	const [ updatedReminder, setUpdatedReminder ] = useState({});
 	const [ refReminder, setRefReminder ] = useState(item);
 	const [ refTrigger, setRefTrigger ] = useState(new Date());
+	//const [ dateString, setDateString ] = useState('');
 	const [ errorText, setErrorText ] = useState('');
 	const { theme } = useSelector(S => S.options);
 	const dispatch = useDispatch();
@@ -36,6 +37,22 @@ export default function ReminderEditDialog(props) {
 			console.log('New value is NOT DATE with', refTrigger);
 		}
 	}, [ refTrigger ]);
+
+/*
+// I want to change the date shown on the date set button but in order to
+// do that I think I need to refactor the reminders to use a trigger time
+// instead of storing the hour and minute.  This shouldn't be too much
+// of a problem but it does touch a lot of things.  This would make it
+// pretty straightforward -- refTrigger would be a new Date() based on
+// triggerTime in the reminder object
+
+	useEffect(_ => {
+		const dob = new Date();
+		dob.setHours(item.hour, item.minute);
+
+		setDateString(Utils.niceTime(dob));
+	}, [ refTrigger ]);
+*/
 
 	const resetState = _ => {
 		setRefReminder(Rem.createNewReminder());
@@ -72,11 +89,21 @@ export default function ReminderEditDialog(props) {
 			overlayStyle={_Styles[theme].cardActive}
 		>
 			<Dialog.Title title='Update Reminder' titleStyle={_Styles[theme].headerText} />
+			<View style={{ flexDirection: 'row' }}>
+				<Text style={[ _Styles[theme].headerText, { marginRight: 'auto' } ]}>Active?</Text>
+
+				<Switch
+					value={refReminder.active}
+					onValueChange={value => updateProp('active', value)}
+					style={[ _Styles[theme].switchStyle, { flex: 1 } ]}
+					color={_Colors[theme].cardActiveBodyText}
+				/>
+			</View>
 			<TextInput
 				placeholder='Reminder title...'
 				value={refReminder.title}
 				onChangeText={text => updateProp('title', text)}
-				style={_Styles[theme].textInput}
+				style={[ _Styles[theme].textInput, { marginTop: 10 } ]}
 				placeholderTextColor={_Colors[theme].subtitleText}
 			/>
 			{ errorText && <Text style={{ color: 'red' }}>{errorText}</Text> }

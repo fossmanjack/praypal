@@ -25,12 +25,12 @@ export default function SpeedDialOverlay() {
 				icon={{
 					name: 'add',
 					type: 'material',
-					color: _Colors[theme].buttonActiveText,
+					color: _Colors[theme].SDOButtonText,
 				}}
 				openIcon={{
 					name: 'minus',
 					type: 'material-community',
-					color: _Colors[theme].buttonActiveText,
+					color: _Colors[theme].SDOButtonText,
 				}}
 				onOpen={_ => setSpeedDialOpen(!speedDialOpen)}
 				onClose={_ => setSpeedDialOpen(!speedDialOpen)}
@@ -46,7 +46,7 @@ export default function SpeedDialOverlay() {
 					icon={{
 						name: 'playlist-add',
 						type: 'material',
-						color: _Colors[theme].buttonActiveText,
+						color: _Colors[theme].SDOButtonText,
 					}}
 					title='Add prayer'
 					titleStyle={_Styles[theme].sdoActionButtonTitle}
@@ -60,7 +60,7 @@ export default function SpeedDialOverlay() {
 					icon={{
 						name: 'add-alert',
 						type: 'material',
-						color: _Colors[theme].buttonActiveText,
+						color: _Colors[theme].SDOButtonText,
 					}}
 					title='Add reminder'
 					titleStyle={_Styles[theme].sdoActionButtonTitle}

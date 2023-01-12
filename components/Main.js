@@ -38,6 +38,11 @@ const Tab = createBottomTabNavigator();
 export default function Main(props) {
 	const { theme, devMode } = useSelector(S => S.options);
 	const [ optionsVisible, toggleOptionsVisible ] = useState(false);
+/*
+	const [ backgroundImgSrc, setBackgroundImgSrc ] = useState(theme === 'dark'
+		? require('../assets/img/themes/dark/background.png')
+		: require('../assets/img/themes/light/background.png');
+*/
 
 	const backgroundImgSrc = theme === 'dark'
 		? require('../assets/img/themes/dark/background.png')

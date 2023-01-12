@@ -17,10 +17,10 @@
 
 ### Pre-release
 
-- [ ] Fix colors on dialogs
-- [ ] FAB colors
-- [ ] Develop light theme
-- [ ] Background event handler for notifications
+- [x] Fix colors on dialogs
+- [x] FAB colors
+- [x] Develop light theme
+- [x] Background event handler for notifications
 - [ ] Fix icon
 
 ### Morals Tracker
