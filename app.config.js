@@ -3,7 +3,7 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 export default {
 	name: IS_DEV ? 'PrayPal (dev)' : 'PrayPal',
 	slug: 'praypal',
-	version: '0.2.1',
+	version: '0.2.2',
 	orientation: 'portrait',
 	icon: './assets/icons/praypalIcon.png',
 	userInterfaceStyle: 'light',
