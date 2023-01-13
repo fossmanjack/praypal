@@ -13,6 +13,7 @@ import {
 	View
 } from 'react-native';
 import { useSelector } from 'react-redux';
+import { StatusBar } from 'expo-status-bar';
 
 // Community imports
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
@@ -79,6 +80,7 @@ export default function Main(props) {
 		<>
 		{/*<Blurhash blurhash={Utils.getBlurHashString(theme)} style={_Styles[theme].backgroundBlurHash}/>*/}
 			<ImageBackground source={backgroundImgSrc} style={_Styles[theme].backgroundImage} />
+			<StatusBar style={theme} />
 			<NavigationContainer theme={navTheme}>
 				<Tab.Navigator
 					initialRouteName='List'

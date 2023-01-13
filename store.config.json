@@ -1,0 +1,17 @@
+{
+	"configVersion": 0,
+	"apple": {
+		"info": {
+			"en-US": {
+				"title": "PrayPal",
+				"subtitle": "A helpful prayer friend",
+				"description": "An angel on your shoulder to remind you to pray and to keep track of whom you want to pray for.",
+				"keywords": ["prayer", "christian", "christianity", "reminder"],
+				"marketingUrl": "https://p3soft.com/praypal",
+				"supportUrl": "https://p3soft.com/praypal",
+				"privacyPolicyUrl": "https://p3soft.com/praypal"
+			}
+		}
+	}
+}
+
